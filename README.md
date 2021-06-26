@@ -1,1 +1,1 @@
-# HI, this is menote
+# HI, I'm MeNote
