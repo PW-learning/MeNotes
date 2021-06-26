@@ -1,32 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <!-- RUBIK font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>MeNote</title>
     <link rel="stylesheet" href="css/style.css?v=0.001" />
+    <link rel="icon" href="./img/icons/tabIcon.png">
 </head>
+
 <body>
     <header>
-        <h1>MeNotes</h1>
-        <p>Share when you sure</p>
+        <h1>MeNote</h1>
+        <p>Share When You Are Sure</p>
     </header>
     <main>
         <div id="write">
             <textarea id="note" placeholder="Type your note here"></textarea>
-            <span id="count">Only 280 letters</span>
-            <button id="add">ADD</button>
+            <div class="note-information">
+                <span id="count">Only 280 letters</span>
+                <button id="add">ADD</button>
+            </div>
         </div>
         <div id="show">
             <p>You have <span id="nfn">0</span> note(s)</p>
         </div>
     </main>
     <footer>
-        <p>Share when you sure</p>
+        <p class="slogan">Share when you sure</p>
     </footer>
     <div id="toast">Toast Content</div>
+    <!-- toast library -->
     <script src="js/pwTools.js?v=0.001"></script>
-    <script src="js/app.js?v=0.001"></script>
+    <!-- our js -->
+    <script type="module" src="js/app.js?v=0.001"></script>
+    <!-- <script type="module" src="js/pwToast.js"></script> -->
 </body>
+
 </html>
