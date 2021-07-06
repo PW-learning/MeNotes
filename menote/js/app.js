@@ -71,3 +71,21 @@ shr.forEach((v, k) => {
         }
     })
 })
+//for Scroll
+// catch elements
+
+let myButton = document.getElementById("goup");
+//  'use strict';
+   window.onscroll = function(){
+
+      if( window.pageYOffset <=500){
+          myButton.style.display = "none";
+      } else{
+          ( window.pageYOffset >=500)
+          myButton.style.display = "block";
+      }
+   }
+myButton.onclick = function(){
+//     'use strict';
+ window.scroll(0,0);
+}

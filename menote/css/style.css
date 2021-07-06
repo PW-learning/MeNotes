@@ -5,6 +5,7 @@
 --pw-txt: #424242;
 --pw-bg: #eee;
 --pw-wit:#fff;
+--pw-drk:#000000db;
 }
 * {margin: 0;padding: 0;box-sizing: border-box;}
 html {background-color:var(--pw-man);font-size: 62.5%;}
@@ -23,3 +24,4 @@ footer {background-color: var(--pw-wit);height:40px;position: fixed;bottom: 0;ri
 #toast {visibility: hidden;width: 260px;margin:auto;background: rgba(0,0,0,.9);color: #fff;text-align: center;border-radius: 2px;
 padding: 16px;position: fixed;z-index: 1;top:auto;right:0;bottom: 50px;left:0;}
 #toast.show {visibility: visible;}
+#goup{ position: fixed; bottom: 10px; right: 10px; background:var(--pw-drk); display: none;}
