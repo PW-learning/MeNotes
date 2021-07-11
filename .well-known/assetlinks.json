@@ -1,0 +1,5 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target" : { "namespace": "android_app", "package_name": "com.menotes.twa",
+               "sha256_cert_fingerprints": ["B3:BD:7F:78:4F:7E:2F:A8:A3:9B:06:33:60:C2:16:40:17:95:92:91:9A:C0:26:07:20:58:BD:DD:99:76:32:75"] }
+}]

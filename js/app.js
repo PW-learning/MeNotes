@@ -1,3 +1,12 @@
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('https://menote.pehpe.com/pw-sw.js')
+    .then(function(reg){
+        console.log("Yes, PWWW SW is registered.");
+    }).catch(function(err) {
+        console.log("This happened:", err)
+    });
+}
+
 // Catch Elements
 let n = $id("note")
 let c = $id("count")
@@ -11,11 +20,14 @@ const mx = 280
 n.addEventListener("input", () => {
     let r = mx - n.value.length
     c.textContent = `Only ${r} letters`
-    if(r < 25){
-        c.style.color = "#f70"
+    if(r <= 0){
+        c.style.color = "#f00"
         vibrate([100,50,100])
+    } else if(r < 25){
+        c.style.color = "#f70"
+    } else {
+        c.style.color = "#000"
     }
-    // TODO: red color when mor than 180
 })
 // Insert note to storage
 a.addEventListener("click", () => {
@@ -34,9 +46,11 @@ for (let i = 0; i < localStorage.length; i++){
     let ne = document.createElement("div")
     ne.innerHTML = `
         <div id="note-${i}" class="note">
-            <p class="the-note">${localStorage.getItem(localStorage.key(i))}</p>
+            <textarea class="the-note" readonly="true" dir="auto">${localStorage.getItem(localStorage.key(i))}</textarea>
             <hr /><button class="del">Delete</button>
             <button id="pw-shr-${i}" class="pw-shr">Share</button>
+            <button id="pw-edt-${i}" class="pw-edt">Edit</button>
+            <button id="pw-edt-${i}" class="pw-sav">Save</button>
         </div>
     `
     s.appendChild(ne)
@@ -54,7 +68,30 @@ zzz.forEach((v,k) => {
         }
     })
 })
-// TODO: Edit note
+// Edit note
+let edt = document.querySelectorAll(".pw-edt")
+edt.forEach((v,k) => {
+    v.addEventListener("click", () => {
+        let tar = v.parentElement.firstElementChild
+        console.log(tar)
+        tar.removeAttribute("readonly")
+        v.style.display = "none"
+        v.nextElementSibling.style.display = "inline-block"
+    })
+})
+
+let sav = document.querySelectorAll(".pw-sav")
+sav.forEach((v,k) => {
+    v.style.display = "none"
+    v.addEventListener("click", () => {
+        let tar = v.parentElement.firstElementChild
+        v.style.display = "none"
+        localStorage.setItem(localStorage.key(k),tar.value)
+        vibOnce()
+        location.reload()
+    })
+})
+
 // Share when you sure
 let shr = document.querySelectorAll(".pw-shr")
 shr.forEach((v, k) => {
