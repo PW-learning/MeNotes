@@ -8,103 +8,105 @@ if ('serviceWorker' in navigator) {
 }
 
 // Catch Elements
-let n = $id("note")
-let c = $id("count")
-let a = $id("add")
-let s = $id("show")
-let q = $id("nfn")
+let noteTextArea = $id("note-text-area")
+let countSpanEl = $id("letters-count")
+let addNewNoteButton = $id("add-button")
+let allNotesContainer = $id("all-notes-container")
+let notesCount = $id("notes-count")
 // Fixed values
-const mn = 10
-const mx = 280
+const min = 5
+const max = 280
 // Check letters count in textarea
-n.addEventListener("input", () => {
-    let r = mx - n.value.length
-    c.textContent = `Only ${r} letters`
-    if(r <= 0){
-        c.style.color = "#f00"
+noteTextArea.addEventListener("input", () => {
+    let remainingLetters = max - noteTextArea.value.length
+    if(remainingLetters<= 0){
+        countSpanEl.textContent = remainingLetters
+        countSpanEl.style.color = "#f00"
         vibrate([100,50,100])
-    } else if(r < 25){
-        c.style.color = "#f70"
+    } else if(remainingLetters< 25){
+        countSpanEl.textContent = `Only ${remainingLetters} letters`
+        countSpanEl.style.color = "#f70"
     } else {
-        c.style.color = "#000"
+        countSpanEl.textContent = `Only ${remainingLetters} letters`
+        countSpanEl.style.color = "#000"
     }
 })
 // Insert note to storage
-a.addEventListener("click", () => {
-    if(n.value.length >= mn && n.value.length <= mx){
-        localStorage.setItem(rId(),n.value)
+addNewNoteButton.addEventListener("click", () => {
+    if(noteTextArea.value.length >= min && noteTextArea.value.length <= max){
+        localStorage.setItem(rId(),noteTextArea.value)
         location.reload()
     } else {
-        pwToast('You must type between 10 and 180 letters please',5)
+        pwToast('Note should at least be between 5 and 180 letters',5)
         vibError()
     }
 })
 // Show all notes
-q.innerHTML = localStorage.length
+notesCount.innerHTML = localStorage.length
 for (let i = 0; i < localStorage.length; i++){
     console.log(localStorage.getItem(localStorage.key(i)))
-    let ne = document.createElement("div")
-    ne.innerHTML = `
-        <div id="note-${i}" class="note">
-            <textarea class="the-note" readonly="true" dir="auto">${localStorage.getItem(localStorage.key(i))}</textarea>
-            <hr /><button class="del">Delete</button>
-            <button id="pw-shr-${i}" class="pw-shr">Share</button>
-            <button id="pw-edt-${i}" class="pw-edt">Edit</button>
-            <button id="pw-edt-${i}" class="pw-sav">Save</button>
+    let newNote = document.createElement("div")
+    newNote.innerHTML = `
+        <div id="note-${i}" class="note-container">
+            <textarea class="new-note" readonly="true" dir="auto">${localStorage.getItem(localStorage.key(i))}</textarea>
+            <hr /><button class="delete-button">Delete</button>
+            <button id="pw-share-${i}" class="pw-share">Share</button>
+            <button id="pw-edit-${i}" class="pw-edit">Edit</button>
+            <button id="pw-save-${i}" class="pw-save">Save</button>
         </div>
     `
-    s.appendChild(ne)
+    allNotesContainer.appendChild(newNote)
 }
 // Delete note
-let zzz = document.querySelectorAll(".del")
-zzz.forEach((v,k) => {
-    v.addEventListener("click", () => {
+let deleteButtons = document.querySelectorAll(".delete-button")
+deleteButtons.forEach((button,key) => {
+    button.addEventListener("click", () => {
+        debugger
         if (confirm("Are you sure ? This note will go for good")) {
-            localStorage.removeItem(localStorage.key(k))
+            localStorage.removeItem(localStorage.key(key))
             vibOnce()
             location.reload()
         } else {
-            pwToast("Nothing deleted")
+            pwToast("Nothing was deleted")
         }
     })
 })
 // Edit note
-let edt = document.querySelectorAll(".pw-edt")
-edt.forEach((v,k) => {
-    v.addEventListener("click", () => {
-        let tar = v.parentElement.firstElementChild
-        console.log(tar)
-        tar.removeAttribute("readonly")
-        v.style.display = "none"
-        v.nextElementSibling.style.display = "inline-block"
+let editButtons = document.querySelectorAll(".pw-edit")
+editButtons.forEach((button,key) => {
+    button.addEventListener("click", () => {
+        let noteBeingEdited = button.parentElement.firstElementChild
+        noteBeingEdited.removeAttribute("readonly")
+        button.style.display = "none"
+        button.nextElementSibling.style.display = "inline-block"
     })
 })
 
-let sav = document.querySelectorAll(".pw-sav")
-sav.forEach((v,k) => {
-    v.style.display = "none"
-    v.addEventListener("click", () => {
-        let tar = v.parentElement.firstElementChild
-        v.style.display = "none"
-        localStorage.setItem(localStorage.key(k),tar.value)
+let saveButtons = document.querySelectorAll(".pw-save")
+saveButtons.forEach((button,key) => {
+    button.style.display = "none"
+    button.addEventListener("click", () => {
+        let newNoteValue = button.parentElement.firstElementChild.value;
+        button.style.display = "none"
+        localStorage.setItem(localStorage.key(key),newNoteValue)
         vibOnce()
         location.reload()
     })
 })
 
 // Share when you sure
-let shr = document.querySelectorAll(".pw-shr")
-shr.forEach((v, k) => {
-    v.addEventListener("click", () => {
-        let msg = v.parentElement.firstElementChild.innerHTML
+let shareButtons = document.querySelectorAll(".pw-share")
+shareButtons.forEach((button, key) => {
+    button.addEventListener("click", () => {
+        let msg = button.parentElement.firstElementChild.innerHTML
         if (navigator.share) {
             navigator.share({
                 title: 'MeNote',
                 text: msg,
                 url: 'https://menote.pehpe.com',
             })
-                .then(() => console.log('Successful share'))
-                .catch((error) => console.log('Error sharing', error));
+            .then(() => console.log('Successful share'))
+            .catch((error) => console.log('Error sharing', error));
         }
     })
 })
