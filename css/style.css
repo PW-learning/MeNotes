@@ -1,10 +1,20 @@
 :root {
-	--pw-man: #2f58a8;
-	--pw-sub: #e71e26;
-	--pw-ttl: #333333;
-	--pw-txt: #424242;
-	--pw-bg: #eee;
-	--pw-wit: #fff;
+	--pw-white: #fff;
+	--pw-black: #000;
+    /* light variables */
+    --pw-light-bg: #eee;
+	--pw-light-main: #2f58a8;
+    --pw--light-heading: #e71e26;
+
+    /* dark variables */
+    --pw-dark-bg: #000;
+    --pw-dark-main: #ff4af4;
+    --pw--dark-heading: #41e1bb;
+
+    /* fonts */
+    --pw-f-rubik: 'Rubik', sans-serif;
+    --pw-f-roboto: 'Roboto', sans-serif;
+
 }
 * {
 	margin: 0;
@@ -12,19 +22,32 @@
 	box-sizing: border-box;
 }
 html {
-	background-color: var(--pw-man);
+    font-family: var(--pw-f-rubik);
+	background-color: var(--pw-light-main);
 	font-size: 62.5%;
 }
+.html-f-roboto {
+    font-family: var(--pw-f-roboto)
+}
 body {
-	background-color: var(--pw-bg);
+	background-color: var(--pw-light-bg);
 	font-size: 1.25em;
 	min-height: 100vh;
 }
-h1 {
-	color: var(--pw-sub);
+.dark-theme-body {
+    background-color: var(--pw-dark-main);
 }
-p {
-	color: var(--pw-man);
+h1 {
+	color: var(--pw--light-heading);
+}
+.dark-theme-h1 {
+    color: var(--pw--dark-heading);
+}
+.letters-count-light {
+	color: var(--pw-light-main);
+}
+.letters-count-dark {
+	color: var(--pw-dark-main);
 }
 header {
 	text-align: center;
@@ -32,30 +55,28 @@ header {
 main {
 	padding: 1rem;
 }
-.note {
+.note-container {
 	padding: 1rem;
 	margin: 3em auto;
-	background-color: var(--pw-wit);
+	background-color: var(--pw-white);
+    color: var(--pw-black);
 	border-radius: 1rem;
 }
-.note p {
-	padding: 5px;
-}
-.the-note {
+.new-note {
 	white-space: pre-wrap;
 	padding: 5px;
 	width: 100%;
 	height: 120px;
 	resize: none;
 	border: none;
-	background-color: var(--pw-wit);
-	outline-color: var(--pw-wit);
+	background-color: var(--pw-white);
+	outline-color: var(--pw-white);
 }
-#write {
+.text-area-container {
 	max-width: 360px;
 	margin: 2em auto;
 }
-#write textarea {
+.text-area-container  textarea {
 	width: 100%;
 	height: 100px;
 	resize: none;
@@ -65,21 +86,23 @@ main {
 	border: none;
 	outline:none;
 }
-#count {
+.letters-count {
+    display: inline-block;
+    min-width: 30px;
 }
 #add {
 	float: right;
 }
 button {
-	border-none: none;
+	border: none;
 	padding: 0.5rem;
 	margin: 0.5rem;
-	background-color: var(--pw-man);
-	color: var(--pw-wit);
+	background-color: var(--pw-light-main);
+	color: var(--pw-white);
 	border: none;
 }
 footer {
-	background-color: var(--pw-wit);
+	background-color: var(--pw-white);
 	height: 40px;
 	position: fixed;
 	bottom: 0;
