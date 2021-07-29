@@ -73,6 +73,7 @@ showHideLabelsButton.addEventListener("click", ()=>{
 
     }
 })
+
 addNewLabelButton.addEventListener("click", () => {
     let label = labelsTextArea.value
     // label is empty or its just spaces
@@ -136,19 +137,6 @@ function addLabelsToNote() {
 }
 addLabelsToNote();
 
-// // Object { theme: "dark", font: "rubik" }
-// let modifiedData = JSON.parse(localStorage.getItem("settings"));
-// modifiedData.theme = "light";
-// localStorage.setItem("settings", JSON.stringify(modifiedData));
-
-
-
-// []
-// let modifiedNotes = JSON.parse(localStorage.getItem("notes"));
-// let incomingNote = { id: "abc123", date: "2021-07-26", note: "Hello, PW" }
-// modifiedNotes.unshift(incomingNote);
-// localStorage.setItem("notes", JSON.stringify(modifiedNotes))
-
 // Check letters count in textarea
 noteTextArea.addEventListener("input", () => {
         let remainingLetters = max - noteTextArea.value.length
@@ -163,7 +151,8 @@ noteTextArea.addEventListener("input", () => {
             countSpanEl.textContent = `Only ${remainingLetters} letters`
             countSpanEl.style.color = "#000"
         }
-    });
+});
+
 // Insert a new note to the local storage
 addNewNoteButton.addEventListener("click", () => {
         if (noteTextArea.value.length >= min && noteTextArea.value.length <= max) {
