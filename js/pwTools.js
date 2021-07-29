@@ -1,39 +1,49 @@
 // Samir's short selector function
 let $id = id => document.getElementById(id)
-// Generate random ID
-let randomID = () => Date.now().toString(36)
+    // Generate random ID
+let randomID = () => Date.now().toString(36);
+// set as many attributes as you want to a given html element;
+function setAttributes(el, attrs) {
+    for (let key in attrs) {
+        el.setAttribute(key, attrs[key]);
+    }
+};
 // Toast support
 function pwToast(txt = "", time = 5) {
     time = time * 1000;
     let x = document.getElementById("toast");
     x.innerHTML = txt;
     x.className = "show";
-    setTimeout(function(){ x.className = x.className.replace("show", ""); }, time);
+    setTimeout(function() { x.className = x.className.replace("show", ""); }, time);
 }
 // Enable vibration support
 navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
-function vibError(){
+
+function vibError() {
     if (navigator.vibrate) {
-            window.navigator.vibrate([100,50,500])
+        window.navigator.vibrate([100, 50, 500])
     }
 }
-function vibOnce(){
+
+function vibOnce() {
     if (navigator.vibrate) {
-            window.navigator.vibrate(500)
+        window.navigator.vibrate(500)
     }
 }
-function vibTwice(){
+
+function vibTwice() {
     if (navigator.vibrate) {
-            window.navigator.vibrate([100,50,100])
+        window.navigator.vibrate([100, 50, 100])
     }
 }
-function vibrate(sec){
+
+function vibrate(sec) {
     if (navigator.vibrate) {
-            window.navigator.vibrate(sec)
+        window.navigator.vibrate(sec)
     }
 }
 // Connection status
-if(navigator.onLine){
+if (navigator.onLine) {
     pwToast("You are good to go")
 } else {
     pwToast("You are offline... check your internet connection")

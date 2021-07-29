@@ -8,96 +8,130 @@
 // }
 
 // Catch Elements
-const noteTextArea = $id("note-text-area")
-const countSpanEl = $id("letters-count")
-const addNewNoteButton = $id("add-button")
+const noteTextArea = $id("note-text-area");
+const titleTextArea = $id("title-text-area");
+const countSpanEl = $id("letters-count");
+const addNewNoteButton = $id("add-button");
 
 const showHideLabelsButton = $id("labels-button");
 const labelsContainer = $id("labels-container");
+const currentNoteLabels = $id("current-note-labels");
 const addNewLabelButton = $id("add-new-label-button");
 const labelsTextArea = $id("lables-text-area");
-const labelsList = $id("labels-list")
+const labelsList = $id("labels-list");
 
-const allNotesContainer = $id("all-notes-container")
-const notesCount = $id("notes-count")
-    // Fixed values
-const min = 5;
-const max = 280;
-
-// create our data structure
-// localStorage.clear();
-// const notes = new Map();
-// notes.set(rId(), {note: "some note"});
-// notes.set(rId(), {note: "some other note"});
+const allNotesContainer = $id("all-notes-container");
+const notesCount = $id("notes-count");
+// note length values;
+const min = 1;
+const max = 3000;
 
 // if a new user/new machine, set this basic data;
 if (!localStorage.getItem("settings")) {
     localStorage.setItem("settings", JSON.stringify({ theme: "light", font: "rubik" }));
-    localStorage.setItem("notes", JSON.stringify([{obj: 1}]));
+    localStorage.setItem("notes", JSON.stringify([]));
     localStorage.setItem("labels", JSON.stringify([]));
 }
 
-// working with labels;
-function makeAndStoreLabels(array) {
-    labelsList.innerHTML = "";
-    array.forEach(label => {
-        let newLabel = document.createElement("li");
-        newLabel.id = label;
-        newLabel.addEventListener("click", () => {
-        })
-        newLabel.classList.add("label-container");
-        let removeLabel = document.createElement("span")
-        removeLabel.classList.add("remove-label-button")
-        removeLabel.textContent = "x";
-        newLabel.textContent = label;
-        newLabel.append(removeLabel);
-        labelsList.append(newLabel);
+/*  ===============
+    working with labels;
+=============== */
 
-        removeLabel.id = removeLabel.previousSibling.textContent
-        removeLabel.addEventListener("click", () => {
-            let labelToRemove = array.findIndex((labelName) => labelName === removeLabel.id);
-            array.splice(labelToRemove, 1);
-            removeLabel.parentElement.remove();
-        })
-
-    });
-    
-}
-
-showHideLabelsButton.addEventListener("click", ()=>{
+// show and hide the labels list by using 'Labels...' button, change the text on that button also to signal to the user its functionality;
+showHideLabelsButton.addEventListener("click", () => {
     labelsContainer.classList.toggle("show-labels-container")
     if (showHideLabelsButton.textContent.startsWith("L")) {
         showHideLabelsButton.textContent = "Close"
     } else {
         showHideLabelsButton.textContent = "Labels..."
-
     }
 })
 
+// make the labels list that shows up upon clicking on 'labels...' button, keep it in sync with the local storage saved labels, make the html needed for the labels in this list
+function makeLabelsInLabelsList(array) {
+    labelsList.innerHTML = "";
+    array.forEach(label => {
+        let labelContainer = document.createElement("li");
+        let newLabel = document.createElement("span");
+        newLabel.id = label;
+        newLabel.classList.add("label-container");
+        let removeLabel = document.createElement("span")
+        removeLabel.classList.add("remove-label-button")
+        removeLabel.textContent = "x";
+        newLabel.textContent = label;
+
+        labelContainer.append(newLabel);
+        labelContainer.append(removeLabel);
+        labelsList.append(labelContainer);
+
+        removeLabel.id = removeLabel.previousSibling.textContent;
+        removeALabel(removeLabel, array, "permanent");
+
+    });
+
+}
+// a function to remove a label and it can remove in permanent, temporarily, and soft ways. the removal will be permanent only if you remove a label from the list of the available/stored labels. the removal will be soft meaning it will be only removed from that note itself and not from the list of stored user-made labels. the removal will be temporarily meaning the removal will be from the note being written right now, a visual removal/html element removal only;
+function removeALabel(el, allLabels, removeType) {
+    el.addEventListener("click", () => {
+        el.parentElement.remove();
+        if (removeType === "permanent") {
+            let labelToRemove = allLabels.findIndex((labelID) => labelID === el.id);
+            allLabels.splice(labelToRemove, 1);
+            localStorage.setItem("labels", JSON.stringify(allLabels))
+        } else if (removeType === "soft") {
+            // get the id of this note, without anything else;
+            let thisNoteID = el.id.slice(0, 8);
+            let allNotes = JSON.parse(localStorage.getItem("notes"));
+            // find the right note based on its id from the stored notes;
+            let thisNote = allNotes.find(note => {
+                return note.id === thisNoteID;
+            });
+
+            // get the label that has been clicked and find its index in its stored array so we can remove it;
+            let thisNoteLabel = el.previousElementSibling.textContent
+            let thisNoteLabelIndex = thisNote.labels.findIndex(label => {
+                return label === thisNoteLabel;
+            })
+            thisNote.labels.splice(thisNoteLabelIndex, 1);
+            // update the stored notes;
+            allNotes.forEach(note => {
+                if (note.id === thisNote.id) {
+                    let oldObjIndx = allNotes.findIndex(oldObj => oldObj.id === note.id);
+                    allNotes.splice(oldObjIndx, 1, thisNote);
+                }
+            });
+            localStorage.setItem("notes", JSON.stringify(allNotes));
+        }
+    })
+}
+// make a new label and store it both visually and in the local storage, validate the label's name to not add an empty name label, make the html needed for the label and add it to the list of all labels, validate whether the label is already in the list of html labels;
 addNewLabelButton.addEventListener("click", () => {
-    let label = labelsTextArea.value
+    let label = labelsTextArea.value;
     // label is empty or its just spaces
     if (label === "" || label.replace(/\s/g, "").length === 0) return
     let doesLabelExist = storedLabels.some((existingLabel) => {
-        return existingLabel === label
-    })
+            return existingLabel === label
+        })
+        // label doesn't already exist, store it to the local storage and make the html needed for it to display it visually;
     if (!doesLabelExist) {
         labelsTextArea.value = "";
         let storedLabels = JSON.parse(localStorage.getItem("labels"));
         storedLabels.unshift(label);
         localStorage.setItem("labels", JSON.stringify(storedLabels))
-        makeAndStoreLabels(storedLabels);
+        makeLabelsInLabelsList(storedLabels);
         addLabelsToNote();
     } else {
+        // label already exist, alret the user;
         addNewLabelButton.classList.add("add-new-label-button--warn")
         setTimeout(() => {
             addNewLabelButton.classList.remove("add-new-label-button--warn")
         }, 500);
     }
-   
-})
 
-labelsTextArea.addEventListener("input", ()=>{
+});
+
+// trying to add a label with an empty name or name made up of empty spaces, alret the user;
+labelsTextArea.addEventListener("input", () => {
     let label = labelsTextArea.value
     if (label === "" || label.replace(/\s/g, "").length === 0) {
         addNewLabelButton.classList.add("add-new-label-button--dormant")
@@ -107,63 +141,150 @@ labelsTextArea.addEventListener("input", ()=>{
 })
 
 let storedLabels = JSON.parse(localStorage.getItem("labels"));
-makeAndStoreLabels(storedLabels);
+makeLabelsInLabelsList(storedLabels);
+
+/* ====================
+    validate labels, check whether a label already exist before adding it, make labels' HTML
+===================== */
 
 // add a label from the user saved labels to the current note;
 function addLabelsToNote() {
-    let currentNoteLabelsContainer = $id("current-note-labels");
-    console.log(currentNoteLabelsContainer);
-    let availableLablesElements = Array.from(labelsList.children);
-    availableLablesElements.forEach(labelElement => {
-        labelElement.addEventListener("click", () => {
-            let isLabelAlreadyAdded = Array.from(currentNoteLabelsContainer.children).some(alreadyExistingLabel => {
-                return alreadyExistingLabel.id === labelElement.id
-            })
-            if (!isLabelAlreadyAdded) {
-                let labelContainer = document.createElement("span");
-                let removeThisLabel = document.createElement("span");
-                removeThisLabel.textContent = "X"
-                labelContainer.textContent = labelElement.textContent.slice(0, -1);
-                labelContainer.id = labelElement.textContent.slice(0, -1);
-                labelContainer.append(removeThisLabel);
-                currentNoteLabelsContainer.append(labelContainer);
-                removeThisLabel.addEventListener("click", () => {
-                    labelContainer.remove();
+    // get all available and stored labels;
+    let savedLabelsElements = Array.from(labelsList.children);
+    savedLabelsElements.forEach(labelFromTheList => {
+        // child of 0 index is the label, which has its name, id, and all the information we need;
+        labelFromTheList.children[0].addEventListener("click", () => {
+            // check whether this tag has already been added to the current note or not, by comparing if an html element with the same id already exist in the labels div;
+            let isLabelAlreadyAdded = Array.from(currentNoteLabels.children).some(alreadyExistingLabel => {
+
+                    return alreadyExistingLabel.children[0].id === labelFromTheList.children[0].id
                 })
+                // if the label doesn't exist already, add it;
+            if (!isLabelAlreadyAdded) {
+                makeLabelHTMLOnNotes(labelFromTheList.textContent, currentNoteLabels, "temporarily");
             }
         })
 
     })
 }
+
+// removeType determines whether to remove the label completely or just temporarily  from the currently being written note;
+function makeLabelHTMLOnNotes(labelText, whereToAppend, removeType, noteID) {
+    let currentStoredLabels = JSON.parse(localStorage.getItem("labels"));
+
+    let labelContainer = document.createElement("li");
+    labelContainer.classList.add("label-span");
+    let newLabel = document.createElement("span");
+    newLabel.textContent = labelText.slice(0, -1);
+    newLabel.id = labelText.slice(0, -1);
+
+    let removeThisLabel = document.createElement("span");
+    removeThisLabel.textContent = "X"
+    if (noteID) removeThisLabel.id = `${noteID}-remove`
+
+    labelContainer.append(newLabel);
+    labelContainer.append(removeThisLabel);
+
+    whereToAppend.append(labelContainer);
+    removeThisLabel.addEventListener("click", () => {
+        removeALabel(removeThisLabel, currentStoredLabels, removeType)
+    })
+}
+
 addLabelsToNote();
+
+/* ========================
+    letters count feature
+===========================*/
 
 // Check letters count in textarea
 noteTextArea.addEventListener("input", () => {
-        let remainingLetters = max - noteTextArea.value.length
-        if (remainingLetters <= 0) {
-            countSpanEl.textContent = remainingLetters
-            countSpanEl.style.color = "#f00"
-            vibrate([100, 50, 100])
-        } else if (remainingLetters < 25) {
-            countSpanEl.textContent = `Only ${remainingLetters} letters`
-            countSpanEl.style.color = "#f70"
-        } else {
-            countSpanEl.textContent = `Only ${remainingLetters} letters`
-            countSpanEl.style.color = "#000"
-        }
+    let remainingLetters = max - noteTextArea.value.length
+    if (remainingLetters <= 0) {
+        countSpanEl.textContent = remainingLetters
+        countSpanEl.style.color = "#f00"
+        vibrate([100, 50, 100])
+    } else if (remainingLetters < 25) {
+        countSpanEl.textContent = `Only ${remainingLetters} letters`
+        countSpanEl.style.color = "#f70"
+    } else {
+        countSpanEl.textContent = `Only ${remainingLetters} letters`
+        countSpanEl.style.color = "#000"
+    }
 });
+
+/* ===============
+    listens to the event of adding a new note, make the new note html, store this new note in the local storage
+=============== */
 
 // Insert a new note to the local storage
 addNewNoteButton.addEventListener("click", () => {
-        if (noteTextArea.value.length >= min && noteTextArea.value.length <= max) {
-            storeNewNote(noteTextArea.value);
-            location.reload()
-        } else {
-            pwToast('Note should at least be between 5 and 180 letters', 5)
-            vibError()
-        }
+    // check the note's length before doing anything and alret the user if it's too short or too long;
+    if (noteTextArea.value.length >= min && noteTextArea.value.length <= max) {
+        storeNewNote();
+        // location.reload() refresh the page to preview changes;
+        location.reload()
+    } else {
+        pwToast('Note should at least be between 5 and 280 letters', 5)
+        vibError()
+    }
+});
+
+// make the needed html for each note from the local storage to display them;
+function makeStoredNotesHTML() {
+    // get all stored and saved notes and make them js objects;
+    let currentNotes = JSON.parse(localStorage.getItem("notes"));
+    currentNotes.forEach(note => {
+        let container = document.createElement("div");
+        container.classList.add("text-area-container");
+        // 
+        let noteUpperSection = document.createElement("div");
+        noteUpperSection.classList.add("text-areas");
+        let titleTextArea = document.createElement("textarea");
+        setAttributes(titleTextArea, {
+            name: "title",
+            id: `${note.id}-title`,
+            class: "generic-text-area title-text-area",
+            minLength: "",
+            maxLength: "32",
+            autocomlpete: "off",
+            autocorrect: "off",
+            autocapitalize: "none",
+            spellcheck: "false",
+            readonly: "true",
+        })
+        titleTextArea.textContent = note.value
+        noteUpperSection.append(titleTextArea);
+        container.append(noteUpperSection);
+        // 
+        let noteLowerSection = document.createElement("div");
+        let noteTextArea = document.createElement("textarea");
+        setAttributes(noteTextArea, {
+            name: "note",
+            id: `${note.id}-note`,
+            class: "generic-text-area note-text-area",
+            autocomlpete: "off",
+            autocorrect: "off",
+            autocapitalize: "none",
+            spellcheck: "false",
+            readonly: "true"
+        });
+        noteTextArea.textContent = note.value
+        noteLowerSection.append(noteTextArea);
+        container.append(noteLowerSection);
+        // 
+        let currentNotesLabelsContainer = document.createElement("div");
+        currentNotesLabelsContainer.classList.add("current-notes-labels");
+        note.labels.forEach(label => {
+            makeLabelHTMLOnNotes(label + "x", currentNotesLabelsContainer, "soft", note.id);
+        })
+        container.append(currentNotesLabelsContainer);
+        allNotesContainer.append(container);
     })
-    // Show all notes
+}
+// Show all notes
+makeStoredNotesHTML();
+
 // notesCount.innerHTML = localStorage.length
 // for (let i = 0; i < localStorage.length; i++) {
 //     let newNote = document.createElement("div")
@@ -231,18 +352,17 @@ shareButtons.forEach((button, key) => {
     })
 })
 
-// helper functions
-
-function storeNewNote(note) {
+// store a new note to the local storage, with whatever information we want to store;
+function storeNewNote() {
     let currentNotes = JSON.parse(localStorage.getItem("notes"));
     let date = new Date();
-    currentNotes.unshift(
-        {
-            id: randomID(),
-            noteDate: date.toLocaleString(),
-            noteContent: note,
-            labels: null
-        }
-    )
-    console.log(currentNotes);
+    let newNote = {};
+    newNote.id = randomID()
+    newNote.value = noteTextArea.value;
+    newNote.title = titleTextArea.value;
+    newNote.date = date.toLocaleString();
+    newNote.labels = [];
+    Array.from(currentNoteLabels.children).forEach(label => newNote.labels.push(label.firstElementChild.id))
+    currentNotes.unshift(newNote)
+    localStorage.setItem("notes", JSON.stringify(currentNotes));
 }
