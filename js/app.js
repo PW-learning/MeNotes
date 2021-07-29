@@ -70,6 +70,7 @@ function makeLabelsInLabelsList(array) {
     });
 
 }
+
 // a function to remove a label and it can remove in permanent, temporarily, and soft ways. the removal will be permanent only if you remove a label from the list of the available/stored labels. the removal will be soft meaning it will be only removed from that note itself and not from the list of stored user-made labels. the removal will be temporarily meaning the removal will be from the note being written right now, a visual removal/html element removal only;
 function removeALabel(el, allLabels, removeType) {
     el.addEventListener("click", () => {
@@ -81,6 +82,7 @@ function removeALabel(el, allLabels, removeType) {
         } else if (removeType === "soft") {
             // get the id of this note, without anything else;
             let thisNoteID = el.id.slice(0, 8);
+
             let allNotes = JSON.parse(localStorage.getItem("notes"));
             // find the right note based on its id from the stored notes;
             let thisNote = allNotes.find(note => {
@@ -253,7 +255,7 @@ function makeStoredNotesHTML() {
             spellcheck: "false",
             readonly: "true",
         })
-        titleTextArea.textContent = note.value
+        titleTextArea.textContent = note.title
         noteUpperSection.append(titleTextArea);
         container.append(noteUpperSection);
         // 
@@ -274,11 +276,21 @@ function makeStoredNotesHTML() {
         container.append(noteLowerSection);
         // 
         let currentNotesLabelsContainer = document.createElement("div");
-        currentNotesLabelsContainer.classList.add("current-notes-labels");
+        currentNotesLabelsContainer.classList.add("current-note-labels");
         note.labels.forEach(label => {
             makeLabelHTMLOnNotes(label + "x", currentNotesLabelsContainer, "soft", note.id);
         })
         container.append(currentNotesLabelsContainer);
+        // 
+        let callToActionsButtonsContainer = document.createElement("div");
+        callToActionsButtonsContainer.classList.add("note-cta-buttons")
+
+        let deleteNoteButton = document.createElement("button");
+        deleteNoteButton.textContent = "Delete";
+        deleteNoteButton.id = note.id;
+        deleteNoteButton.addEventListener("click", deleteNote(deleteNoteButton))
+        callToActionsButtonsContainer.append(deleteNoteButton);
+        container.append(callToActionsButtonsContainer);
         allNotesContainer.append(container);
     })
 }
@@ -299,20 +311,32 @@ makeStoredNotesHTML();
 //     `
 //     allNotesContainer.appendChild(newNote)
 // }
-// Delete note
-let deleteButtons = document.querySelectorAll(".delete-button")
-deleteButtons.forEach((button, key) => {
-        button.addEventListener("click", () => {
-            if (confirm("Are you sure ? This note will go for good")) {
-                localStorage.removeItem(localStorage.key(key))
-                vibOnce()
-                location.reload()
-            } else {
-                pwToast("Nothing was deleted")
-            }
-        })
-    })
-    // Edit note
+// Delete a note button;
+function deleteNote() {
+    return function(button) {
+        console.log(button);
+        let noteToDeleteId = button.target.id;
+        let currentStoredNotes = JSON.parse(localStorage.getItem("notes"))
+        let noteToDeleteIndex = currentStoredNotes.findIndex(note => note.id === noteToDeleteId);
+        currentStoredNotes.splice(noteToDeleteIndex, 1);
+        localStorage.setItem("notes", JSON.stringify(currentStoredNotes));
+        location.reload();
+    }
+}
+
+// let deleteButtons = document.querySelectorAll(".delete-button")
+// deleteButtons.forEach((button, key) => {
+//         button.addEventListener("click", () => {
+//             if (confirm("Are you sure ? This note will go for good")) {
+//                 localStorage.removeItem(localStorage.key(key))
+//                 vibOnce()
+//                 location.reload()
+//             } else {
+//                 pwToast("Nothing was deleted")
+//             }
+//         })
+//     });
+// Edit note
 let editButtons = document.querySelectorAll(".pw-edit")
 editButtons.forEach((button, key) => {
     button.addEventListener("click", () => {

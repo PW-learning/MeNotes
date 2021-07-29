@@ -35,6 +35,10 @@ html {
     font-size: 62.5%;
 }
 
+textarea {
+    font-family: var(--pw-f-rubik);
+}
+
 .html-f-roboto {
     font-family: var(--pw-f-roboto)
 }
@@ -109,8 +113,8 @@ main {
 }
 
 .text-areas {
-    box-shadow: inset 0 5px 5px var(--pw-dark-shadow);
     border-radius: 1rem;
+    background-color: var(--pw-grey);
 }
 
 .generic-text-area {
@@ -126,6 +130,8 @@ main {
 }
 
 .title-text-area {
+    font-weight: 700;
+    font-size: 18px;
     height: 50px;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
@@ -146,7 +152,7 @@ main {
 .labels {
     position: absolute;
     top: 1px;
-    right: -5px;
+    right: -2px;
     z-index: 2;
     display: flex;
     flex-direction: column;
@@ -230,8 +236,6 @@ main {
 
 .current-note-labels {
     background-color: var(--pw-grey);
-    border-bottom-right-radius: 1rem;
-    border-bottom-left-radius: 1rem;
     padding: 12px 6px;
     color: var(--pw-black);
     cursor: pointer;
@@ -250,12 +254,20 @@ main {
     padding: 5px 1px 5px 5px;
     font-size: 12px;
     margin: 5px;
+    width: max-content;
 }
 
 .label-span span {
     display: inline-block;
     text-align: center;
-    width: 30px;
+    padding: 0px 7px;
+}
+
+.note-cta-buttons {
+    border-bottom-right-radius: 1rem;
+    border-bottom-left-radius: 1rem;
+    background: var(--pw-grey);
+    border-top: 1px solid royalblue;
 }
 
 
