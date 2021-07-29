@@ -1,7 +1,7 @@
 // Samir's short selector function
 let $id = id => document.getElementById(id)
 // Generate random ID
-let rId = () => Date.now().toString(36)
+let randomID = () => Date.now().toString(36)
 // Toast support
 function pwToast(txt = "", time = 5) {
     time = time * 1000;
