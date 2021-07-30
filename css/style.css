@@ -321,3 +321,10 @@ footer {
 #toast.show {
     visibility: visible;
 }
+
+.delete-notice button {
+    background: red;
+    color: lime;
+    font-size: 25px;
+    font-weight: 900;
+}

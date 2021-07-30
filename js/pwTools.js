@@ -9,13 +9,40 @@ function setAttributes(el, attrs) {
     }
 };
 // Toast support
-function pwToast(txt = "", time = 5) {
-    time = time * 1000;
-    let x = document.getElementById("toast");
-    x.innerHTML = txt;
-    x.className = "show";
-    setTimeout(function() { x.className = x.className.replace("show", ""); }, time);
+class Toast {
+    constructor(message, time = 4) {
+        this.message = message
+        this.time = time * 1000;
+    }
+    toastAlert() {
+        let toast = document.getElementById("toast");
+        toast.innerHTML = this.message;
+        toast.classList.add("show")
+        setTimeout(function() {
+            toast.classList.remove("show");
+        }, this.time);
+    }
+    toastUndoDelete(id) {
+        let toast = document.getElementById("toast");
+        toast.innerHTML = "Note Deleted"
+        toast.classList.add("show", "delete-notice")
+        let undoButton = document.createElement("button");
+        undoButton.textContent = "Undo";
+        undoButton.id = id;
+        toast.append(undoButton);
+        setTimeout(function() {
+            toast.classList.remove("show");
+        }, this.time);
+    }
 }
+
+// function pwToast(message = "", time = 5) {
+//     time *= 1000;
+//     let toast = document.getElementById("toast");
+//     toast.innerHTML = message;
+//     toast.className = "show";
+//     setTimeout(function() { toast.className = toast.className.replace("show", ""); }, time);
+// }
 // Enable vibration support
 navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 
@@ -43,10 +70,9 @@ function vibrate(sec) {
     }
 }
 // Connection status
-if (navigator.onLine) {
-    pwToast("You are good to go")
-} else {
-    pwToast("You are offline... check your internet connection")
+if (!navigator.onLine) {
+    let pwToast = new Toast("You are offline... check your internet connection", 2)
+    pwToast.toastAlert();
 }
 window.addEventListener("online", () => {
     pwToast("You are back Online")
