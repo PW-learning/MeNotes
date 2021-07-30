@@ -9,32 +9,38 @@ function setAttributes(el, attrs) {
     }
 };
 // Toast support
-class Toast {
-    constructor(message, time = 4) {
-        this.message = message
-        this.time = time * 1000;
-    }
-    toastAlert() {
-        let toast = document.getElementById("toast");
-        toast.innerHTML = this.message;
-        toast.classList.add("show")
-        setTimeout(function() {
-            toast.classList.remove("show");
-        }, this.time);
-    }
-    toastUndoDelete(id) {
-        let toast = document.getElementById("toast");
-        toast.innerHTML = "Note Deleted"
-        toast.classList.add("show", "delete-notice")
-        let undoButton = document.createElement("button");
-        undoButton.textContent = "Undo";
-        undoButton.id = id;
-        toast.append(undoButton);
-        setTimeout(function() {
-            toast.classList.remove("show");
-        }, this.time);
-    }
+function toastNotice(message, time = 5) {
+    time *= 1000
+    let toast = document.getElementById("toast");
+    toast.innerHTML = message;
+    toast.classList.add("show")
+    setTimeout(function() {
+        toast.classList.remove("show");
+    }, time);
 }
+
+function toastDelete(message, time, restoreNote) {
+    time *= 1000
+    setTimeout(function() {
+        toast.classList.remove("show");
+    }, time);
+    let toast = document.getElementById("toast");
+    toast.innerHTML = message
+    toast.classList.add("show", "delete-notice")
+    let undoButton = document.createElement("button");
+    undoButton.textContent = "Undo";
+    toast.append(undoButton);
+    undoButton.addEventListener("click", () => {
+        let notes = restoreNote.currentStoredNotes;
+        notes.splice(restoreNote.deletedNoteIndex, 0, restoreNote.deletedNote);
+        localStorage.setItem("notes", JSON.stringify(notes));
+        makeStoredNotesHTML();
+        toast.classList.remove("show");
+    })
+
+
+}
+
 
 // function pwToast(message = "", time = 5) {
 //     time *= 1000;

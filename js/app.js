@@ -225,14 +225,12 @@ addNewNoteButton.addEventListener("click", () => {
     if (noteTextArea.value.length >= min && noteTextArea.value.length <= max) {
         storeNewNote();
         makeStoredNotesHTML();
-        let pwToast = new Toast("Note Added!", 3);
-        pwToast.toastAlert();
+        toastNotice("Note Added!", 3);
         noteTextArea.value = "";
         titleTextArea.value = "";
 
     } else {
-        let pwToast = new Toast('Note should at least be between 5 and 280 letters', 5)
-        pwToast.toastAlert();
+        toastNotice('Note should at least be between 5 and 280 letters', 5);
         vibError()
     }
 });
@@ -320,15 +318,18 @@ makeStoredNotesHTML();
 // Delete a note button;
 function deleteNote() {
     return function(button) {
-        let noteToDeleteId = button.target.id;
         let currentStoredNotes = JSON.parse(localStorage.getItem("notes"))
+        let noteToDeleteId = button.target.id;
         let noteToDeleteIndex = currentStoredNotes.findIndex(note => note.id === noteToDeleteId);
+        toastDelete("Note Deleted", 5, {
+            deletedNote: currentStoredNotes[noteToDeleteIndex],
+            deletedNoteIndex: noteToDeleteIndex,
+            currentStoredNotes: currentStoredNotes
+        });
         currentStoredNotes.splice(noteToDeleteIndex, 1);
         localStorage.setItem("notes", JSON.stringify(currentStoredNotes));
         makeStoredNotesHTML();
         // allow the user to undo;
-        let toast = new Toast("", 1);
-        toast.toastUndoDelete(noteToDeleteId);
     }
 }
 
