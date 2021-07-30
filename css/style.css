@@ -236,7 +236,7 @@ main {
 }
 
 .current-note-labels {
-    padding: 12px 6px;
+    padding: 12px 0;
     color: var(--pw-black);
     cursor: pointer;
     display: flex;
@@ -246,18 +246,14 @@ main {
     min-height: 44px;
 }
 
-.current-note-details {
-    padding: 4px;
-}
-
 .label-span {
     border-radius: 1.1rem;
     background-color: var(--pw-light-main);
     color: var(--pw-black);
     font-weight: 400;
-    padding: 5px 1px 5px 5px;
+    padding: 5px 1px 5px 0;
     font-size: 12px;
-    margin: 5px;
+    margin: 5px 1px 5px 3px;
     width: max-content;
 }
 
@@ -275,12 +271,31 @@ main {
     border-top: 1px solid royalblue;
 }
 
-.note-date {
-    text-align: right;
+.note-info {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
 }
 
-.note-date p {
+.note-info div:first-child p {
     padding: 0 3px 3px;
+    text-align: center;
+}
+
+.note-info div:last-child {
+    align-self: flex-end;
+    padding: 4px;
+}
+
+
+/* editing a note */
+
+.edit-note {
+    border-left: 3px solid var(--pw-light-main-hover);
+}
+
+.hide-button {
+    display: none;
 }
 
 

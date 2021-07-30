@@ -199,15 +199,19 @@ addLabelsToNote();
     letters count feature
 ===========================*/
 
-// Check characters count in textarea
-noteTextArea.addEventListener("input", () => {
-    let charactersCount = noteTextArea.value.length
-    countSpanEl.textContent = charactersCount + " Character(s)"
-});
+// Check characters count in a textarea
+function charactersCount(el, showCount, note) {
+    el.addEventListener("input", () => {
+        let charactersCount = el.value.length
+        showCount.innerHTML = charactersCount + " Characters(s)"
+        note.charCount = charactersCount;
+    });
+}
 
-/* ===============
-    listens to the event of adding a new note, make the new note html, store this new note in the local storage
-=============== */
+charactersCount(noteTextArea, countSpanEl)
+    /* ===============
+        listens to the event of adding a new note, make the new note html, store this new note in the local storage
+    =============== */
 
 // Insert a new note to the local storage
 addNewNoteButton.addEventListener("click", () => {
@@ -216,8 +220,11 @@ addNewNoteButton.addEventListener("click", () => {
         storeNewNote();
         makeStoredNotesHTML();
         toastNotice("Note Added!", 3);
-        noteTextArea.value = "";
         titleTextArea.value = "";
+        noteTextArea.value = "";
+        noteTextArea.value.length = 0;
+        countSpanEl.textContent = "0 Character(s)"
+
 
     } else {
         toastNotice('Note should at least be between 5 and 280 letters', 5);
@@ -276,9 +283,10 @@ function makeStoredNotesHTML() {
         })
         container.append(currentNotesLabelsContainer);
         //
-        let noteDateContainer = document.createElement("div");
-        noteDateContainer.classList.add("note-date");
+        let noteInformationContainer = document.createElement("div");
+        noteInformationContainer.classList.add("note-info");
 
+        let noteDateContainer = document.createElement("div");
         let yearMonthDay = note.date.slice(0, 9);
         let hourOfTheDay = note.date.slice(11, 15);
         let periodOfTheDay = note.date.slice(-2)
@@ -292,16 +300,42 @@ function makeStoredNotesHTML() {
 
         noteDateContainer.append(hourOfTheDayPara)
         noteDateContainer.append(yearMonthDayPara)
-        container.append(noteDateContainer);
+            // 
+        let noteCharactersLengthContainer = document.createElement("div");
+        let noteCharactersCountPara = document.createElement("p");
+        noteCharactersCountPara.textContent = `${note.charCount} Characters(s)`;
+        noteCharactersLengthContainer.append(noteCharactersCountPara);
+
+        noteInformationContainer.append(noteDateContainer)
+        noteInformationContainer.append(noteCharactersLengthContainer)
+
+        container.append(noteInformationContainer);
         // 
         let callToActionsButtonsContainer = document.createElement("div");
         callToActionsButtonsContainer.classList.add("note-cta-buttons")
 
         let deleteNoteButton = document.createElement("button");
         deleteNoteButton.textContent = "Delete";
-        deleteNoteButton.id = note.id;
+        deleteNoteButton.id = `${note.id}-delete`;
         deleteNoteButton.addEventListener("click", deleteNote(deleteNoteButton))
+
+        let editNoteButton = document.createElement("button");
+        editNoteButton.textContent = "Edit";
+        editNoteButton.id = `${note.id}-edit`;
+
+        let saveEditedNoteButton = document.createElement("button");
+        saveEditedNoteButton.textContent = "Save";
+        saveEditedNoteButton.id = `${note.id}-save`;
+        saveEditedNoteButton.classList.add("hide-button");
+
+        editNoteButton.addEventListener("click", editNote(editNoteButton, noteTextArea, noteCharactersCountPara, saveEditedNoteButton, note))
+
+        saveEditedNoteButton.addEventListener("click", saveNoteAfterEdit(currentNotes, saveEditedNoteButton, noteTextArea, titleTextArea))
+
         callToActionsButtonsContainer.append(deleteNoteButton);
+        callToActionsButtonsContainer.append(editNoteButton);
+        callToActionsButtonsContainer.append(saveEditedNoteButton);
+
         container.append(callToActionsButtonsContainer);
         allNotesContainer.append(container);
     })
@@ -323,11 +357,16 @@ makeStoredNotesHTML();
 //     `
 //     allNotesContainer.appendChild(newNote)
 // }
-// Delete a note button;
+
+/* ===============
+    call to action functions 
+=============== */
+
+// Delete a note function;
 function deleteNote() {
     return function(button) {
         let currentStoredNotes = JSON.parse(localStorage.getItem("notes"))
-        let noteToDeleteId = button.target.id;
+        let noteToDeleteId = button.target.id.slice(0, 8);
         let noteToDeleteIndex = currentStoredNotes.findIndex(note => note.id === noteToDeleteId);
         // allow the user to undo;
         toastDelete("Note Deleted", 7, {
@@ -340,7 +379,54 @@ function deleteNote() {
         makeStoredNotesHTML();
     }
 }
-// Edit a note button;
+
+// Edit a note function;
+function editNote(...theArgs) {
+    return function() {
+        let targetButton = theArgs[0]
+        let targetTextArea = theArgs[1]
+        let charactersCountParagraph = theArgs[2]
+        let saveButtonToBeShown = theArgs[3];
+        let storedNoteBeforeEditing = theArgs[4];
+        let currentContainer = targetButton.offsetParent;
+        let currentNoteTitle = currentContainer.children[0].children[0]
+        let currentNoteBody = currentContainer.children[1].children[0]
+
+        currentNoteTitle.classList.add("edit-note");
+        currentNoteTitle.style.borderTopLeftRadius = "1rem";
+        currentNoteBody.classList.add("edit-note");
+
+        currentNoteTitle.removeAttribute("readonly");
+        currentNoteBody.removeAttribute("readonly");
+        currentNoteBody.focus();
+        currentNoteBody.select();
+
+        charactersCount(targetTextArea, charactersCountParagraph, storedNoteBeforeEditing);
+        targetButton.classList.toggle("hide-button");
+        saveButtonToBeShown.classList.toggle("hide-button")
+        toastNotice("Editing Mode", 3)
+    }
+}
+
+function saveNoteAfterEdit(...theArgs) {
+    return function() {
+        let currentStoredNotes = theArgs[0];
+        let targetButton = theArgs[1];
+        let newNoteValueFromTargetTextArea = theArgs[2]
+        let newTitleValueFromTargetTextArea = theArgs[3]
+        let noteToBeEditedId = targetButton.id.slice(0, 8);
+        currentStoredNotes.forEach(note => {
+            if (note.id === noteToBeEditedId) {
+                note.value = newNoteValueFromTargetTextArea.value
+                note.title = newTitleValueFromTargetTextArea.value;
+                localStorage.setItem("notes", JSON.stringify(currentStoredNotes));
+                makeStoredNotesHTML();
+                toastNotice("Note Saved", 3)
+            }
+        });
+    }
+}
+
 let editButtons = document.querySelectorAll(".pw-edit")
 editButtons.forEach((button, key) => {
     button.addEventListener("click", () => {
@@ -352,6 +438,7 @@ editButtons.forEach((button, key) => {
 })
 
 let saveButtons = document.querySelectorAll(".pw-save")
+    // currentNoteTitle.setAttribute("readonly", true);
 saveButtons.forEach((button, key) => {
     button.style.display = "none"
     button.addEventListener("click", () => {
@@ -390,6 +477,7 @@ function storeNewNote() {
     newNote.title = titleTextArea.value;
     newNote.date = date.toLocaleString();
     newNote.labels = [];
+    newNote.charCount = noteTextArea.value.length;
     Array.from(currentNoteLabels.children).forEach(label => newNote.labels.push(label.firstElementChild.id))
     currentNotes.unshift(newNote)
     localStorage.setItem("notes", JSON.stringify(currentNotes));
