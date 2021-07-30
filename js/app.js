@@ -199,20 +199,10 @@ addLabelsToNote();
     letters count feature
 ===========================*/
 
-// Check letters count in textarea
+// Check characters count in textarea
 noteTextArea.addEventListener("input", () => {
-    let remainingLetters = max - noteTextArea.value.length
-    if (remainingLetters <= 0) {
-        countSpanEl.textContent = remainingLetters
-        countSpanEl.style.color = "#f00"
-        vibrate([100, 50, 100])
-    } else if (remainingLetters < 25) {
-        countSpanEl.textContent = `Only ${remainingLetters} letters`
-        countSpanEl.style.color = "#f70"
-    } else {
-        countSpanEl.textContent = `Only ${remainingLetters} letters`
-        countSpanEl.style.color = "#000"
-    }
+    let charactersCount = noteTextArea.value.length
+    countSpanEl.textContent = charactersCount + " Character(s)"
 });
 
 /* ===============
@@ -285,6 +275,24 @@ function makeStoredNotesHTML() {
             makeLabelHTMLOnNotes(label + "x", currentNotesLabelsContainer, "soft", note.id);
         })
         container.append(currentNotesLabelsContainer);
+        //
+        let noteDateContainer = document.createElement("div");
+        noteDateContainer.classList.add("note-date");
+
+        let yearMonthDay = note.date.slice(0, 9);
+        let hourOfTheDay = note.date.slice(11, 15);
+        let periodOfTheDay = note.date.slice(-2)
+        let timeInHours = `${hourOfTheDay} ${periodOfTheDay}`
+
+        let hourOfTheDayPara = document.createElement("p");
+        hourOfTheDayPara.textContent = timeInHours;
+
+        let yearMonthDayPara = document.createElement("p");
+        yearMonthDayPara.textContent = yearMonthDay;
+
+        noteDateContainer.append(hourOfTheDayPara)
+        noteDateContainer.append(yearMonthDayPara)
+        container.append(noteDateContainer);
         // 
         let callToActionsButtonsContainer = document.createElement("div");
         callToActionsButtonsContainer.classList.add("note-cta-buttons")
@@ -321,7 +329,8 @@ function deleteNote() {
         let currentStoredNotes = JSON.parse(localStorage.getItem("notes"))
         let noteToDeleteId = button.target.id;
         let noteToDeleteIndex = currentStoredNotes.findIndex(note => note.id === noteToDeleteId);
-        toastDelete("Note Deleted", 5, {
+        // allow the user to undo;
+        toastDelete("Note Deleted", 7, {
             deletedNote: currentStoredNotes[noteToDeleteIndex],
             deletedNoteIndex: noteToDeleteIndex,
             currentStoredNotes: currentStoredNotes
@@ -329,23 +338,9 @@ function deleteNote() {
         currentStoredNotes.splice(noteToDeleteIndex, 1);
         localStorage.setItem("notes", JSON.stringify(currentStoredNotes));
         makeStoredNotesHTML();
-        // allow the user to undo;
     }
 }
-
-// let deleteButtons = document.querySelectorAll(".delete-button")
-// deleteButtons.forEach((button, key) => {
-//         button.addEventListener("click", () => {
-//             if (confirm("Are you sure ? This note will go for good")) {
-//                 localStorage.removeItem(localStorage.key(key))
-//                 vibOnce()
-//                 location.reload()
-//             } else {
-//                 pwToast("Nothing was deleted")
-//             }
-//         })
-//     });
-// Edit note
+// Edit a note button;
 let editButtons = document.querySelectorAll(".pw-edit")
 editButtons.forEach((button, key) => {
     button.addEventListener("click", () => {
