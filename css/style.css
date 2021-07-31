@@ -362,10 +362,10 @@ footer {
     border-radius: 2px;
     padding: 16px;
     position: fixed;
-    z-index: 1;
-    top: auto;
+    z-index: 3;
+    bottom: auto;
     right: 0;
-    bottom: 50px;
+    top: 50px;
     left: 0;
 }
 
@@ -373,9 +373,14 @@ footer {
     visibility: visible;
 }
 
+.delete-notice {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
 .delete-notice button {
-    background: red;
-    color: lime;
-    font-size: 25px;
     font-weight: 900;
+    margin-left: 2rem;
+    font-size: 19px;
 }

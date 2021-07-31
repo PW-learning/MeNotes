@@ -26,6 +26,16 @@ const notesCount = $id("notes-count");
 const min = 1;
 const max = 3000;
 
+function testing() {
+    let flag = true;
+    if (flag) {
+        localStorage.clear();
+        flag = false;
+    }
+}
+
+testing();
+
 // if a new user/new machine, set this basic data;
 if (!localStorage.getItem("settings")) {
     localStorage.setItem("settings", JSON.stringify({ theme: "light", font: "rubik" }));
@@ -354,7 +364,7 @@ function makeStoredNotesHTML() {
 
         editNoteButton.addEventListener("click", editNote(editNoteButton, noteTextArea, noteCharactersCountPara, saveEditedNoteButton, note))
 
-        saveEditedNoteButton.addEventListener("click", saveNoteAfterEdit(currentNotes, saveEditedNoteButton, noteTextArea, titleTextArea))
+        saveEditedNoteButton.addEventListener("click", saveNoteAfterEdit(saveEditedNoteButton, noteTextArea, titleTextArea))
 
         let shareButton = document.createElement("button");
         shareButton.textContent = "Share";
@@ -439,10 +449,10 @@ function editNote(...theArgs) {
 
 function saveNoteAfterEdit(...theArgs) {
     return function() {
-        let currentStoredNotes = theArgs[0];
-        let targetButton = theArgs[1];
-        let newNoteValueFromTargetTextArea = theArgs[2]
-        let newTitleValueFromTargetTextArea = theArgs[3]
+        let currentStoredNotes = JSON.parse(localStorage.getItem("notes"));
+        let targetButton = theArgs[0];
+        let newNoteValueFromTargetTextArea = theArgs[1]
+        let newTitleValueFromTargetTextArea = theArgs[2]
         let noteToBeEditedId = targetButton.id.slice(0, 8);
         currentStoredNotes.forEach(currentlyStoredNote => {
             if (currentlyStoredNote.id === noteToBeEditedId) {
@@ -528,6 +538,7 @@ function storeNewNote() {
     newNote.charCount = noteTextArea.value.length;
     newNote.isEdited = false;
     Array.from(currentNoteLabels.children).forEach(label => newNote.labels.push(label.firstElementChild.id))
+    currentNoteLabels.innerHTML = "";
     currentNotes.unshift(newNote)
     localStorage.setItem("notes", JSON.stringify(currentNotes));
 }
