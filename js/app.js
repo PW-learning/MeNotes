@@ -1,11 +1,11 @@
-// if ('serviceWorker' in navigator) {
-//     navigator.serviceWorker.register('https://menote.pehpe.com/pw-sw.js')
-//     .then(function(reg){
-//         console.log("Yes, PWWW SW is registered.");
-//     }).catch(function(err) {
-//         console.log("This happened:", err)
-//     });
-// }
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('https://menote.pehpe.com/pw-sw.js')
+        .then(function(reg) {
+            console.log("Yes, PWWW SW is registered.");
+        }).catch(function(err) {
+            console.log("This happened:", err)
+        });
+}
 
 // Catch Elements
 const noteTextArea = $id("note-text-area");
@@ -233,7 +233,6 @@ addNewNoteButton.addEventListener("click", () => {
     }
 });
 
-
 // make note date;
 
 function makeNoteDateHTML(note) {
@@ -375,21 +374,6 @@ function makeStoredNotesHTML() {
 // Show all notes
 makeStoredNotesHTML();
 
-// notesCount.innerHTML = localStorage.length
-// for (let i = 0; i < localStorage.length; i++) {
-//     let newNote = document.createElement("div")
-//     newNote.innerHTML = `
-//         <div id="note-${i}" class="note-container">
-//             <textarea class="new-note" readonly="true" dir="auto">${localStorage.getItem(localStorage.key(i))}</textarea>
-//             <hr /><button class="delete-button">Delete</button>
-//             <button id="pw-share-${i}" class="pw-share">Share</button>
-//             <button id="pw-edit-${i}" class="pw-edit">Edit</button>
-//             <button id="pw-save-${i}" class="pw-save">Save</button>
-//         </div>
-//     `
-//     allNotesContainer.appendChild(newNote)
-// }
-
 /* ===============
     call to action functions 
 =============== */
@@ -468,9 +452,8 @@ function shareANote(note) {
         let message = note.value
         if (navigator.share) {
             navigator.share({
-                    title: 'MeNotes',
+                    tite: message,
                     text: message,
-                    url: 'https://menotes.pehpe.com',
                 })
                 .then(() => console.log('Successful share'))
                 .catch((error) => console.log('Error sharing', error));
@@ -478,45 +461,6 @@ function shareANote(note) {
     }
 
 }
-let editButtons = document.querySelectorAll(".pw-edit")
-editButtons.forEach((button, key) => {
-    button.addEventListener("click", () => {
-        let noteBeingEdited = button.parentElement.firstElementChild
-        noteBeingEdited.removeAttribute("readonly")
-        button.style.display = "none"
-        button.nextElementSibling.style.display = "inline-block"
-    })
-})
-
-let saveButtons = document.querySelectorAll(".pw-save")
-    // currentNoteTitle.setAttribute("readonly", true);
-saveButtons.forEach((button, key) => {
-    button.style.display = "none"
-    button.addEventListener("click", () => {
-        let newNoteValue = button.parentElement.firstElementChild.value;
-        button.style.display = "none"
-        localStorage.setItem(localStorage.key(key), newNoteValue)
-        vibOnce()
-        location.reload()
-    })
-})
-
-// Share when you sure
-let shareButtons = document.querySelectorAll(".pw-share")
-shareButtons.forEach((button, key) => {
-    button.addEventListener("click", () => {
-        let msg = button.parentElement.firstElementChild.innerHTML
-        if (navigator.share) {
-            navigator.share({
-                    title: 'MeNote',
-                    text: msg,
-                    url: 'https://menote.pehpe.com',
-                })
-                .then(() => console.log('Successful share'))
-                .catch((error) => console.log('Error sharing', error));
-        }
-    })
-})
 
 // store a new note to the local storage, with whatever information we want to store;
 function storeNewNote() {
