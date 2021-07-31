@@ -26,16 +26,6 @@ const notesCount = $id("notes-count");
 const min = 1;
 const max = 3000;
 
-function testing() {
-    let flag = true;
-    if (flag) {
-        localStorage.clear();
-        flag = false;
-    }
-}
-
-testing();
-
 // if a new user/new machine, set this basic data;
 if (!localStorage.getItem("settings")) {
     localStorage.setItem("settings", JSON.stringify({ theme: "light", font: "rubik" }));
@@ -250,17 +240,20 @@ function makeNoteDateHTML(note) {
     let noteDateContainer = document.createElement("div");
 
     function makeNoteDate(note, noteDate) {
+        console.log(note, "||", noteDate, "||", note.date)
         noteDate = noteDate || note.date
-
+        console.log(noteDate)
         let containerElement = document.createElement("div");
         let yearMonthDayPara = document.createElement("p");
         let hourOfTheDayPara = document.createElement("p");
 
-        let yearMonthDay = noteDate.slice(0, 9);
-        let hourOfTheDay = noteDate.slice(11, 15);
-        let periodOfTheDay = noteDate.slice(-2)
+        let yearMonthDay = noteDate.slice(0, 15);
+        console.log(yearMonthDay)
+        let hourOfTheDay = noteDate.slice(16, 21);
+        console.log(hourOfTheDay);
+        let periodOfTheDay;
 
-        hourOfTheDayPara.textContent = `${hourOfTheDay} ${periodOfTheDay}`
+        hourOfTheDayPara.textContent = `${hourOfTheDay} ${hourOfTheDay.slice(0, 2) > 12 ? periodOfTheDay = "PM" : periodOfTheDay = "AM"}`
         yearMonthDayPara.textContent = yearMonthDay;
 
         containerElement.append(hourOfTheDayPara);
@@ -270,8 +263,8 @@ function makeNoteDateHTML(note) {
     if (note.isEdited) {
         let isEditedPara = document.createElement("p");
         isEditedPara.textContent = `Last Edited at:`
-
-        noteDateContainer.append(makeNoteDate(note, new Date().toLocaleString()));
+        let dateNow = new Date().toString()
+        noteDateContainer.append(makeNoteDate(note, dateNow));
 
         noteDateContainer.append(isEditedPara);
 
@@ -528,12 +521,11 @@ shareButtons.forEach((button, key) => {
 // store a new note to the local storage, with whatever information we want to store;
 function storeNewNote() {
     let currentNotes = JSON.parse(localStorage.getItem("notes"));
-    let date = new Date();
     let newNote = {};
     newNote.id = randomID()
     newNote.value = noteTextArea.value;
     newNote.title = titleTextArea.value;
-    newNote.date = date.toLocaleString();
+    newNote.date = new Date().toString();
     newNote.labels = [];
     newNote.charCount = noteTextArea.value.length;
     newNote.isEdited = false;
