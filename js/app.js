@@ -203,8 +203,9 @@ addLabelsToNote();
 function charactersCount(el, showCount, note) {
     el.addEventListener("input", () => {
         let charactersCount = el.value.length
-        showCount.innerHTML = charactersCount + " Characters(s)"
-        note.charCount = charactersCount;
+        showCount.innerHTML = charactersCount + " Character(s)"
+        if (note) note.charCount = charactersCount;
+
     });
 }
 
@@ -232,6 +233,44 @@ addNewNoteButton.addEventListener("click", () => {
     }
 });
 
+
+// make note date;
+
+function makeNoteDateHTML(note) {
+    let noteDateContainer = document.createElement("div");
+
+    function makeNoteDate(note, noteDate) {
+        noteDate = noteDate || note.date
+
+        let containerElement = document.createElement("div");
+        let yearMonthDayPara = document.createElement("p");
+        let hourOfTheDayPara = document.createElement("p");
+
+        let yearMonthDay = noteDate.slice(0, 9);
+        let hourOfTheDay = noteDate.slice(11, 15);
+        let periodOfTheDay = noteDate.slice(-2)
+
+        hourOfTheDayPara.textContent = `${hourOfTheDay} ${periodOfTheDay}`
+        yearMonthDayPara.textContent = yearMonthDay;
+
+        containerElement.append(hourOfTheDayPara);
+        containerElement.append(yearMonthDayPara);
+        return containerElement
+    }
+    if (note.isEdited) {
+        let isEditedPara = document.createElement("p");
+        isEditedPara.textContent = `Last Edited at:`
+
+        noteDateContainer.append(makeNoteDate(note, new Date().toLocaleString()));
+
+        noteDateContainer.append(isEditedPara);
+
+    } else {
+        noteDateContainer.append(makeNoteDate(note));
+    }
+    return noteDateContainer;
+}
+
 // make the needed html for each note from the local storage to display them;
 function makeStoredNotesHTML() {
     allNotesContainer.innerHTML = "";
@@ -256,7 +295,7 @@ function makeStoredNotesHTML() {
             spellcheck: "false",
             readonly: "true",
         })
-        titleTextArea.textContent = note.title
+        titleTextArea.textContent = note.title || "Untitled note:"
         noteUpperSection.append(titleTextArea);
         container.append(noteUpperSection);
         // 
@@ -286,27 +325,12 @@ function makeStoredNotesHTML() {
         let noteInformationContainer = document.createElement("div");
         noteInformationContainer.classList.add("note-info");
 
-        let noteDateContainer = document.createElement("div");
-        let yearMonthDay = note.date.slice(0, 9);
-        let hourOfTheDay = note.date.slice(11, 15);
-        let periodOfTheDay = note.date.slice(-2)
-        let timeInHours = `${hourOfTheDay} ${periodOfTheDay}`
-
-        let hourOfTheDayPara = document.createElement("p");
-        hourOfTheDayPara.textContent = timeInHours;
-
-        let yearMonthDayPara = document.createElement("p");
-        yearMonthDayPara.textContent = yearMonthDay;
-
-        noteDateContainer.append(hourOfTheDayPara)
-        noteDateContainer.append(yearMonthDayPara)
-            // 
         let noteCharactersLengthContainer = document.createElement("div");
         let noteCharactersCountPara = document.createElement("p");
-        noteCharactersCountPara.textContent = `${note.charCount} Characters(s)`;
+        noteCharactersCountPara.textContent = `${note.charCount} Character(s)`;
         noteCharactersLengthContainer.append(noteCharactersCountPara);
 
-        noteInformationContainer.append(noteDateContainer)
+        noteInformationContainer.append(makeNoteDateHTML(note));
         noteInformationContainer.append(noteCharactersLengthContainer)
 
         container.append(noteInformationContainer);
@@ -332,9 +356,14 @@ function makeStoredNotesHTML() {
 
         saveEditedNoteButton.addEventListener("click", saveNoteAfterEdit(currentNotes, saveEditedNoteButton, noteTextArea, titleTextArea))
 
+        let shareButton = document.createElement("button");
+        shareButton.textContent = "Share";
+        shareButton.id = `${note.id}-share`;
+        shareButton.addEventListener("click", shareANote(note));
         callToActionsButtonsContainer.append(deleteNoteButton);
         callToActionsButtonsContainer.append(editNoteButton);
         callToActionsButtonsContainer.append(saveEditedNoteButton);
+        callToActionsButtonsContainer.append(shareButton);
 
         container.append(callToActionsButtonsContainer);
         allNotesContainer.append(container);
@@ -415,10 +444,14 @@ function saveNoteAfterEdit(...theArgs) {
         let newNoteValueFromTargetTextArea = theArgs[2]
         let newTitleValueFromTargetTextArea = theArgs[3]
         let noteToBeEditedId = targetButton.id.slice(0, 8);
-        currentStoredNotes.forEach(note => {
-            if (note.id === noteToBeEditedId) {
-                note.value = newNoteValueFromTargetTextArea.value
-                note.title = newTitleValueFromTargetTextArea.value;
+        currentStoredNotes.forEach(currentlyStoredNote => {
+            if (currentlyStoredNote.id === noteToBeEditedId) {
+                // flag edited notes;
+                if (currentlyStoredNote.value !== newNoteValueFromTargetTextArea.value || currentlyStoredNote.value !== newTitleValueFromTargetTextArea) {
+                    currentlyStoredNote.isEdited = true;
+                }
+                currentlyStoredNote.value = newNoteValueFromTargetTextArea.value
+                currentlyStoredNote.title = newTitleValueFromTargetTextArea.value;
                 localStorage.setItem("notes", JSON.stringify(currentStoredNotes));
                 makeStoredNotesHTML();
                 toastNotice("Note Saved", 3)
@@ -427,6 +460,21 @@ function saveNoteAfterEdit(...theArgs) {
     }
 }
 
+function shareANote(note) {
+    return function() {
+        let message = note.value
+        if (navigator.share) {
+            navigator.share({
+                    title: 'MeNotes',
+                    text: message,
+                    url: 'https://menotes.pehpe.com',
+                })
+                .then(() => console.log('Successful share'))
+                .catch((error) => console.log('Error sharing', error));
+        }
+    }
+
+}
 let editButtons = document.querySelectorAll(".pw-edit")
 editButtons.forEach((button, key) => {
     button.addEventListener("click", () => {
@@ -478,6 +526,7 @@ function storeNewNote() {
     newNote.date = date.toLocaleString();
     newNote.labels = [];
     newNote.charCount = noteTextArea.value.length;
+    newNote.isEdited = false;
     Array.from(currentNoteLabels.children).forEach(label => newNote.labels.push(label.firstElementChild.id))
     currentNotes.unshift(newNote)
     localStorage.setItem("notes", JSON.stringify(currentNotes));

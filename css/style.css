@@ -66,10 +66,12 @@ h1 {
 
 .letters-count-light {
     color: var(--pw-light-main);
+    padding: 4px;
 }
 
 .letters-count-dark {
     color: var(--pw-dark-main);
+    padding: 4px;
 }
 
 header {
@@ -280,6 +282,22 @@ main {
 .note-info div:first-child p {
     padding: 0 3px 3px;
     text-align: center;
+}
+
+
+/* the hour/date of a note div/paragraph */
+
+.note-info>div:first-child {
+    display: flex;
+    flex-direction: row-reverse;
+}
+
+
+/* the last edited at paragraph */
+
+.note-info>div:first-child p {
+    align-self: flex-end;
+    margin-right: 5px;
 }
 
 .note-info div:last-child {
