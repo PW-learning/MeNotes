@@ -477,4 +477,30 @@ function storeNewNote() {
     currentNoteLabels.innerHTML = "";
     currentNotes.unshift(newNote)
     localStorage.setItem("notes", JSON.stringify(currentNotes));
-}
+};
+
+// the settings menu;
+const settingsICon = document.querySelector("#settings-icon");
+const settingsMenu = document.querySelector("#settings-menu-container")
+settingsICon.addEventListener("click", () => {
+    if (!settingsICon.classList.contains("settings-icon-animate")) {
+        settingsICon.classList.add("settings-icon-moved")
+        setTimeout(() => {
+            settingsICon.classList.add("settings-icon-animate")
+
+        }, 10);
+    } else {
+        settingsICon.classList.toggle("settings-icon-moved")
+        setTimeout(() => {
+            settingsICon.classList.toggle("settings-icon-animate")
+
+        }, 400);
+    }
+    if (!settingsMenu.classList.contains("settings-menu-moved")) {
+        settingsMenu.classList.add("settings-menu-moved")
+    } else {
+        setTimeout(() => {
+            settingsMenu.classList.remove("settings-menu-moved")
+        }, 10);
+    }
+})

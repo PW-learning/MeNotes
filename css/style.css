@@ -6,7 +6,7 @@
     --pw-light-bg: #eee;
     --pw-light-main: #2f58a8;
     --pw-light-main-hover: #4a76ce;
-    --pw--light-heading: #e71e26;
+    --pw--light-heading: #2f58a8;
     --pw-light-warn: #ee0f0f;
     /* dark variables */
     --pw-dark-bg: #000;
@@ -18,7 +18,9 @@
     --pw-f-roboto: 'Roboto', sans-serif;
 }
 
-* {
+*,
+*::after,
+*::before {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -76,7 +78,191 @@ h1 {
 
 header {
     text-align: center;
+    background-color: var(--pw-light-bg);
 }
+
+header h1 {
+    padding: 0.6rem 0;
+}
+
+header p {
+    color: black;
+    font-weight: 700;
+}
+
+header .settings-icon-container {
+    z-index: 5;
+    position: absolute;
+    left: 20px;
+    top: 30px;
+}
+
+header .settings-icon {
+    width: 25px;
+    color: var(--pw-light-main);
+    transition: all 400ms ease-in-out;
+}
+
+header .settings-icon-animate {
+    transform: rotate(90deg);
+    cursor: pointer;
+    color: var(--pw-light-main-hover);
+}
+
+header .settings-icon-moved {
+    position: relative;
+    -webkit-transform: translate(270px, 0px);
+    -moz-transform: translate(270px, 0px);
+    -ms-transform: translate(270px, 0px);
+    -o-transform: translate(270px, 0px);
+    transform: translate(270px, 0px);
+    z-index: 5;
+}
+
+.settings-menu {
+    position: absolute;
+    top: 22px;
+    left: -400px;
+    z-index: 3;
+    text-align: center;
+    border: 3px solid green;
+    width: 320px;
+    background-color: var(--pw-light-bg);
+    border-radius: 1rem;
+    font-size: 18px;
+    padding: 0.2rem 0.4rem;
+    transition: all 400ms ease-in;
+}
+
+.settings-menu-moved {
+    /* -webkit-transform: translate(270px, 0px);
+    -moz-transform: translate(270px, 0px);
+    -ms-transform: translate(270px, 0px);
+    -o-transform: translate(270px, 0px); */
+    transform: translate(400px, 0px);
+}
+
+.settings-menu h2 {
+    font-size: 22px;
+    margin: 0 0 1rem;
+}
+
+.themes-settings {
+    display: flex;
+    align-items: center;
+    padding: 0.2rem 0.8rem;
+}
+
+.themes-options {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-grow: 2;
+    position: relative;
+    bottom: -2px;
+    margin: 1rem 0;
+}
+
+.themes-options li {
+    position: relative;
+    transition: all 200ms ease-in-out;
+}
+
+.themes-options li:last-of-type {
+    border-bottom: 2px solid var(--pw-black);
+}
+
+.current-theme-highlight {
+    border-bottom: 2px solid var(--pw-black);
+}
+
+.themes-options li::after {
+    content: "";
+    height: 18px;
+    width: 18px;
+    display: block;
+    background-color: var(--pw-white);
+    border-radius: 50%;
+    border: 1px solid var(--pw-black);
+    position: absolute;
+    top: 3px;
+    right: -24px;
+}
+
+.themes-options li:first-of-type::after {
+    background-color: var(--pw-black);
+}
+
+.themes-options h3 {
+    margin: 0 1rem 0 0;
+}
+
+.clearing-settings {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.2rem 0.8rem;
+}
+
+.clearing-options {
+    margin-right: 3rem;
+    margin-top: 2.4rem;
+    align-self: center;
+    position: relative;
+    top: 10px;
+}
+
+.clearing-options li {
+    position: relative;
+    margin: 0 0 1rem;
+    text-align: left;
+}
+
+.clearing-options li::after {
+    content: "";
+    width: 0px;
+    height: 0px;
+    display: block;
+    background-color: transparent;
+    border: 5px solid transparent;
+    border-top: 5px solid var(--pw-light-main);
+    position: absolute;
+    top: 6px;
+    right: -15px;
+}
+
+.clearing-storage-confirmation {
+    position: absolute;
+    background-color: var(--pw-light-bg);
+    border-radius: 1rem;
+    display: none;
+    padding: 5px;
+}
+
+.clearing-storage-confirmation-active {
+    display: flex;
+}
+
+.clearing-storage-confirmation button {
+    padding: 2px 5px;
+    display: block;
+    border-radius: 1px solid var(--pw-black);
+}
+
+.clearing-storage-confirmation button:first-child {
+    color: var(--pw-light-warn);
+    font-weight: 300;
+}
+
+.clearing-storage-confirmation button:last-child {
+    width: 144px;
+    color: var(--pw-white);
+}
+
+
+/* .themes-settings {
+    text-align: left;
+} */
 
 main {
     padding: 1rem;
@@ -343,6 +529,9 @@ button:hover {
 footer {
     background-color: var(--pw-white);
     /* background-color: var(--pw-black); */
+    font-weight: 700;
+    font-size: 19px;
+    text-transform: capitalize;
     height: 40px;
     position: fixed;
     bottom: 0;
