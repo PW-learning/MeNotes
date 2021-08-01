@@ -300,7 +300,11 @@ function makeStoredNotesHTML() {
             spellcheck: "false",
             readonly: "true",
         })
-        titleTextArea.textContent = note.title || "Untitled note:"
+        if (note.title) {
+            titleTextArea.textContent
+        } else {
+            titleTextArea.placeholder = "Untitled note:"
+        }
         noteUpperSection.append(titleTextArea);
         container.append(noteUpperSection);
         // 
