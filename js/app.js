@@ -8,6 +8,10 @@ if ('serviceWorker' in navigator) {
 }
 
 // Catch Elements
+const body = document.body;
+const themeOptions = document.querySelector(".themes-options");
+const themeOptionsTogglers = Array.from(themeOptions.children)
+
 const noteTextArea = $id("note-text-area");
 const titleTextArea = $id("title-text-area");
 const countSpanEl = $id("letters-count");
@@ -26,12 +30,16 @@ const notesCount = $id("notes-count");
 const min = 1;
 const max = 3000;
 
+body.className = JSON.parse(localStorage.getItem("settings"))[0].theme || "";
+indicateWhichThemeIsActive()
+
 // if a new user/new machine, set this basic data;
 if (!localStorage.getItem("settings")) {
-    localStorage.setItem("settings", JSON.stringify({ theme: "light", font: "rubik" }));
+    localStorage.setItem("settings", JSON.stringify([{ theme: "light" }, { isUserLoggedIn: false }]));
     localStorage.setItem("notes", JSON.stringify([]));
     localStorage.setItem("labels", JSON.stringify([]));
 }
+
 
 /*  ===============
     working with labels;
@@ -43,7 +51,9 @@ showHideLabelsButton.addEventListener("click", () => {
     if (showHideLabelsButton.textContent.startsWith("L")) {
         showHideLabelsButton.textContent = "Close"
     } else {
-        showHideLabelsButton.textContent = "Labels..."
+        showHideLabelsButton.textContent = "Labels...";
+        labelsTextArea.value = "";
+
     }
 })
 
@@ -474,12 +484,67 @@ function storeNewNote() {
     localStorage.setItem("notes", JSON.stringify(currentNotes));
 };
 
+/* ===============
+    the app settings 
+=============== */
+
+// the 'clear storage' options;
+function toggleConfirmationPopups(disabler, el) {
+    disabler.addEventListener("click", () => {
+        el.classList.remove("clearing-confirmation-active");
+    })
+};
+
+const clearNotesOption = document.querySelector("#clear-notes");
+const clearNotesConfirmEl = document.querySelector("#clear-notes-confirm");
+const clearNotesFalseButton = document.querySelector("#clear-notes-false");
+const clearNotesTrueButton = document.querySelector("#clear-notes-true");
+
+const clearLabelsOption = document.querySelector("#clear-labels");
+const clearLabelsConfirmEl = document.querySelector("#clear-labels-confirm");
+const clearLabelsFalseButton = document.querySelector("#clear-labels-false");
+const clearLabelsTrueButton = document.querySelector("#clear-labels-true");
+
+// visibility of before-deletion popups;
+clearNotesOption.addEventListener("click", () => {
+    clearNotesConfirmEl.classList.add("clearing-confirmation-active");
+});
+clearNotesFalseButton.addEventListener("click", () => {
+    clearNotesConfirmEl.classList.remove("clearing-confirmation-active");
+});
+clearLabelsOption.addEventListener("click", () => {
+    clearLabelsConfirmEl.classList.add("clearing-confirmation-active");
+});
+clearLabelsFalseButton.addEventListener("click", () => {
+    clearLabelsConfirmEl.classList.remove("clearing-confirmation-active");
+});
+
+// clear notes/labels;
+clearNotesTrueButton.addEventListener("click", () => {
+    localStorage.setItem("notes", JSON.stringify([]))
+    makeStoredNotesHTML();
+    toastNotice("Notes Deleted", 5)
+    clearNotesConfirmEl.classList.remove("clearing-confirmation-active");
+    clearLabelsConfirmEl.classList.remove("clearing-confirmation-active");
+});
+clearLabelsTrueButton.addEventListener("click", () => {
+    localStorage.setItem("labels", JSON.stringify([]))
+    let storedLabels = JSON.parse(localStorage.getItem("labels"));
+    makeLabelsInLabelsList(storedLabels);
+    makeStoredNotesHTML();
+    toastNotice("Labels Deleted", 5)
+    clearNotesConfirmEl.classList.remove("clearing-confirmation-active");
+    clearLabelsConfirmEl.classList.remove("clearing-confirmation-active");
+});
+
 // hide/show the settings menu;
 const settingsICon = document.querySelector("#settings-icon");
 const settingsMenu = document.querySelector("#settings-menu-container")
 settingsICon.addEventListener("click", () => {
     if (!settingsICon.classList.contains("settings-icon-animate")) {
         settingsICon.classList.add("settings-icon-moved")
+        labelsContainer.classList.remove("show-labels-container");
+        showHideLabelsButton.textContent = "Labels..."
         setTimeout(() => {
             settingsICon.classList.add("settings-icon-animate")
 
@@ -498,30 +563,31 @@ settingsICon.addEventListener("click", () => {
             settingsMenu.classList.remove("settings-menu-moved")
         }, 10);
     }
+    // in case those popups where visible;
+    clearNotesConfirmEl.classList.remove("clearing-confirmation-active");
+    clearLabelsConfirmEl.classList.remove("clearing-confirmation-active");
+
 })
 
 // change color theme of the app;
-function changeAppTheme() {
-    return function(...theArg) {
-        let classToSwitchTo = theArg[0].target.id;
-        let togglers = theArg
-        const body = document.body;
-        body.className = classToSwitchTo
-        console.log(togglers)
-        togglers.forEach(toggler => {
-            debugger
-            if (toggler.target.id === body.className) {
-                toggler.target.classList.add("current-theme-highlight")
-            }
-            if (toggler.target.id !== body.className) {
-                toggler.target.classList.remove("current-theme-highlight")
-            }
-        })
-    }
-
+function indicateWhichThemeIsActive() {
+    themeOptionsTogglers.forEach(toggler => {
+        if (toggler.id === body.className) {
+            toggler.classList.add("current-theme-highlight")
+        }
+        if (toggler.id !== body.className) {
+            toggler.classList.remove("current-theme-highlight")
+        }
+    })
 }
-
-const themeOptions = document.querySelector(".themes-options");
-Array.from(themeOptions.children).forEach(option => {
-    option.addEventListener("click", changeAppTheme(option, Array.from(themeOptions.children)));
+themeOptionsTogglers.forEach(optionButton => {
+    optionButton.addEventListener("click", () => {
+        let classToSwitchTo = optionButton.id;
+        body.className = classToSwitchTo
+        let settings = JSON.parse(localStorage.getItem("settings"));
+        console.log(settings)
+        settings[0].theme = classToSwitchTo
+        localStorage.setItem("settings", JSON.stringify(settings));
+        indicateWhichThemeIsActive()
+    });
 })

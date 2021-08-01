@@ -77,12 +77,11 @@ function vibrate(sec) {
 }
 // Connection status
 if (!navigator.onLine) {
-    let pwToast = new Toast("You are offline... check your internet connection", 2)
-    pwToast.toastAlert();
+    toastAlert("You are offline... check your internet connection", 5);
 }
 window.addEventListener("online", () => {
-    pwToast("You are back Online")
+    toastAlert("You are back Online", 2);
 })
 window.addEventListener("offline", () => {
-    pwToast("You are working Offline")
+    toastAlert("You are working Offline", 5);
 })

@@ -95,17 +95,21 @@
             <h3>Theme:</h3>
             <ul class="themes-options">
                 <li id="dark">Dark </li>
-                <li id="light" class="current-theme-highlight ">Light </li>
+                <li id="light" class="current-theme-highlight">Light </li>
             </ul>
         </div>
         <div class="clearing-settings">
             <h3>Data:</h3>
             <ul class="clearing-options">
-                <li>Delete All Notes</li>
-                <li>Delete All Labels</li>
-                <div id="clearing-storage-confirmation" class="clearing-storage-confirmation clearing-storage-confirmation-active">
-                    <button>Delete. <b>THIS ACTION CAN NOT BE UNDONE</b></button>
-                    <button>Go back</button>
+                <li class="clearing-button" id="clear-notes">Delete All Notes</li>
+                <li class="clearing-button" id="clear-labels">Delete All Labels</li>
+                <div data-target="clear-notes" id="clear-notes-confirm" class="clearing-confirmation clearing-notes">
+                    <button id="clear-notes-true">Delete. (Deleting All notes can't be undone)</button>
+                    <button id="clear-notes-false">Go back</button>
+                </div>
+                <div data-target="clear-labels" id="clear-labels-confirm" class="clearing-confirmation clearing-labels">
+                    <button id="clear-labels-true">Delete. (Deleting All Labels can't be undone)</button>
+                    <button id="clear-labels-false">Go back</button>
                 </div>
             </ul>
         </div>

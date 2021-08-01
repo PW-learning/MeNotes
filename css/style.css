@@ -24,7 +24,7 @@
     --pw-main: #2f58a8;
     --pw-main-lighter: #4a76ce;
     --pw-heading: #2f58a8;
-    --pw-warn: #ee0f0f;
+    --pw-warn: #4a76ce;
 }
 
 .dark {
@@ -123,6 +123,7 @@ header .settings-icon-moved {
     text-align: center;
     width: 320px;
     background-color: var(--pw-bg-light);
+    border: 1px solid var(--pw-main);
     border-radius: 1rem;
     font-size: 18px;
     padding: 0.2rem 0.4rem;
@@ -201,6 +202,7 @@ header .settings-icon-moved {
     align-self: center;
     position: relative;
     top: 10px;
+    user-select: none;
 }
 
 .clearing-options li {
@@ -222,16 +224,30 @@ header .settings-icon-moved {
     right: -15px;
 }
 
-.clearing-storage-confirmation {
+.clearing-confirmation {
     position: absolute;
-    background-color: var(--pw-bg-light);
+    width: 220px;
+    background-color: var(--pw-warn);
     border-radius: 1rem;
     display: none;
     padding: 5px;
 }
 
-.clearing-storage-confirmation-active {
+.clearing-notes {
+    top: 6px;
+    right: -73px;
+}
+
+.clearing-labels {
+    top: 10px;
+    right: -73px;
+}
+
+.clearing-confirmation-active {
     display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 .clearing-storage-confirmation button {
@@ -241,7 +257,6 @@ header .settings-icon-moved {
 }
 
 .clearing-storage-confirmation button:first-child {
-    color: var(--pw-warn);
     font-weight: 300;
 }
 
@@ -509,11 +524,6 @@ button {
     border: none;
 }
 
-button:hover {
-    background-color: var(--pw-main-lighter);
-    cursor: pointer;
-}
-
 footer {
     display: flex;
     justify-content: center;
@@ -543,7 +553,7 @@ footer {
     border-radius: 2px;
     padding: 16px;
     position: fixed;
-    z-index: 3;
+    z-index: 5;
     bottom: auto;
     right: 0;
     top: 50px;
