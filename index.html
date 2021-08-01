@@ -49,7 +49,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body class="light">
     <header>
         <div class="title-container">
             <h1>MeNotes</h1>
@@ -68,7 +68,7 @@
                         <button class="labels-button" id="labels-button">Labels...</button>
                         <div id="labels-container" class="labels-container">
                             <textarea name="labels" id="lables-text-area" class="generic-text-area labels-text-area" placeholder="new label..." maxlength="12" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
-                            <button id="add-new-label-button" class="add-new-label-button add-new-label-button--dormant ">New</button>
+                            <button id="add-new-label-button" class="add-new-label-button">New</button>
                             <ul id="labels-list" class="labels-list"></ul>
                         </div>
                     </div>
@@ -80,7 +80,7 @@
                 </div>
             </div>
             <div class="current-note-details">
-                <span id="letters-count" class="letters-count-light">0 characters</span>
+                <span id="letters-count" class="letters-count">0 characters</span>
                 <button id="add-button">ADD NEW NOTE</button>
             </div>
         </div>
@@ -94,8 +94,8 @@
         <div class="themes-settings">
             <h3>Theme:</h3>
             <ul class="themes-options">
-                <li>Dark </li>
-                <li>Light </li>
+                <li id="dark">Dark </li>
+                <li id="light" class="current-theme-highlight ">Light </li>
             </ul>
         </div>
         <div class="clearing-settings">

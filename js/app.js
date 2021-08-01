@@ -199,13 +199,11 @@ addLabelsToNote();
     letters count feature
 ===========================*/
 
-// Check characters count in a textarea
-function charactersCount(el, showCount, note) {
+// upadte characters count live in textareas
+function charactersCount(el, showCount) {
     el.addEventListener("input", () => {
         let charactersCount = el.value.length
         showCount.innerHTML = charactersCount + " Character(s)"
-        if (note) note.charCount = charactersCount;
-
     });
 }
 
@@ -239,19 +237,14 @@ function makeNoteDateHTML(note) {
     let noteDateContainer = document.createElement("div");
 
     function makeNoteDate(note, noteDate) {
-        console.log(note, "||", noteDate, "||", note.date)
         noteDate = noteDate || note.date
-        console.log(noteDate)
         let containerElement = document.createElement("div");
         let yearMonthDayPara = document.createElement("p");
         let hourOfTheDayPara = document.createElement("p");
 
         let yearMonthDay = noteDate.slice(0, 15);
-        console.log(yearMonthDay)
         let hourOfTheDay = noteDate.slice(16, 21);
-        console.log(hourOfTheDay);
         let periodOfTheDay;
-
         hourOfTheDayPara.textContent = `${hourOfTheDay} ${hourOfTheDay.slice(0, 2) > 12 ? periodOfTheDay = "PM" : periodOfTheDay = "AM"}`
         yearMonthDayPara.textContent = yearMonthDay;
 
@@ -356,7 +349,7 @@ function makeStoredNotesHTML() {
 
         editNoteButton.addEventListener("click", editNote(editNoteButton, noteTextArea, noteCharactersCountPara, saveEditedNoteButton, note))
 
-        saveEditedNoteButton.addEventListener("click", saveNoteAfterEdit(saveEditedNoteButton, noteTextArea, titleTextArea))
+        saveEditedNoteButton.addEventListener("click", saveNoteAfterEdit(saveEditedNoteButton, noteTextArea, titleTextArea, noteCharactersCountPara))
 
         let shareButton = document.createElement("button");
         shareButton.textContent = "Share";
@@ -417,7 +410,7 @@ function editNote(...theArgs) {
         currentNoteBody.focus();
         currentNoteBody.select();
 
-        charactersCount(targetTextArea, charactersCountParagraph, storedNoteBeforeEditing);
+        charactersCount(targetTextArea, charactersCountParagraph);
         targetButton.classList.toggle("hide-button");
         saveButtonToBeShown.classList.toggle("hide-button")
         toastNotice("Editing Mode", 3)
@@ -430,6 +423,7 @@ function saveNoteAfterEdit(...theArgs) {
         let targetButton = theArgs[0];
         let newNoteValueFromTargetTextArea = theArgs[1]
         let newTitleValueFromTargetTextArea = theArgs[2]
+        let noteCountPara = theArgs[3]
         let noteToBeEditedId = targetButton.id.slice(0, 8);
         currentStoredNotes.forEach(currentlyStoredNote => {
             if (currentlyStoredNote.id === noteToBeEditedId) {
@@ -439,6 +433,7 @@ function saveNoteAfterEdit(...theArgs) {
                 }
                 currentlyStoredNote.value = newNoteValueFromTargetTextArea.value
                 currentlyStoredNote.title = newTitleValueFromTargetTextArea.value;
+                currentlyStoredNote.charCount = currentlyStoredNote.value.length
                 localStorage.setItem("notes", JSON.stringify(currentStoredNotes));
                 makeStoredNotesHTML();
                 toastNotice("Note Saved", 3)
@@ -479,7 +474,7 @@ function storeNewNote() {
     localStorage.setItem("notes", JSON.stringify(currentNotes));
 };
 
-// the settings menu;
+// hide/show the settings menu;
 const settingsICon = document.querySelector("#settings-icon");
 const settingsMenu = document.querySelector("#settings-menu-container")
 settingsICon.addEventListener("click", () => {
@@ -503,4 +498,30 @@ settingsICon.addEventListener("click", () => {
             settingsMenu.classList.remove("settings-menu-moved")
         }, 10);
     }
+})
+
+// change color theme of the app;
+function changeAppTheme() {
+    return function(...theArg) {
+        let classToSwitchTo = theArg[0].target.id;
+        let togglers = theArg
+        const body = document.body;
+        body.className = classToSwitchTo
+        console.log(togglers)
+        togglers.forEach(toggler => {
+            debugger
+            if (toggler.target.id === body.className) {
+                toggler.target.classList.add("current-theme-highlight")
+            }
+            if (toggler.target.id !== body.className) {
+                toggler.target.classList.remove("current-theme-highlight")
+            }
+        })
+    }
+
+}
+
+const themeOptions = document.querySelector(".themes-options");
+Array.from(themeOptions.children).forEach(option => {
+    option.addEventListener("click", changeAppTheme(option, Array.from(themeOptions.children)));
 })
