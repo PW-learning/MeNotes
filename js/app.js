@@ -30,7 +30,7 @@ const notesCount = $id("notes-count");
 const min = 1;
 const max = 3000;
 
-body.className = JSON.parse(localStorage.getItem("settings"))[0].theme || "";
+body.className = JSON.parse(localStorage.getItem("settings")).theme || "";
 indicateWhichThemeIsActive()
 
 // if a new user/new machine, set this basic data;
@@ -585,8 +585,7 @@ themeOptionsTogglers.forEach(optionButton => {
         let classToSwitchTo = optionButton.id;
         body.className = classToSwitchTo
         let settings = JSON.parse(localStorage.getItem("settings"));
-        console.log(settings)
-        settings[0].theme = classToSwitchTo
+        settings.theme = classToSwitchTo
         localStorage.setItem("settings", JSON.stringify(settings));
         indicateWhichThemeIsActive()
     });
