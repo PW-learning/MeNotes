@@ -30,15 +30,14 @@ const notesCount = $id("notes-count");
 const min = 1;
 const max = 3000;
 
-body.className = JSON.parse(localStorage.getItem("settings")).theme || "";
-indicateWhichThemeIsActive()
-
 // if a new user/new machine, set this basic data;
 if (!localStorage.getItem("settings")) {
     localStorage.setItem("settings", JSON.stringify([{ theme: "light" }, { isUserLoggedIn: false }]));
     localStorage.setItem("notes", JSON.stringify([]));
     localStorage.setItem("labels", JSON.stringify([]));
 }
+body.className = JSON.parse(localStorage.getItem("settings"))[0].theme
+indicateWhichThemeIsActive()
 
 
 /*  ===============
@@ -236,7 +235,7 @@ addNewNoteButton.addEventListener("click", () => {
 
 
     } else {
-        toastNotice('Note should at least be between 5 and 280 letters', 5);
+        toastNotice("Notes can't be empty", 5);
         vibError()
     }
 });
@@ -299,9 +298,10 @@ function makeStoredNotesHTML() {
             autocapitalize: "none",
             spellcheck: "false",
             readonly: "true",
+            dir: "auto"
         })
         if (note.title) {
-            titleTextArea.textContent
+            titleTextArea.textContent = note.title
         } else {
             titleTextArea.placeholder = "Untitled note:"
         }
@@ -318,7 +318,8 @@ function makeStoredNotesHTML() {
             autocorrect: "off",
             autocapitalize: "none",
             spellcheck: "false",
-            readonly: "true"
+            readonly: "true",
+            dir: "auto"
         });
         noteTextArea.textContent = note.value
         noteLowerSection.append(noteTextArea);
@@ -509,21 +510,13 @@ const clearLabelsConfirmEl = document.querySelector("#clear-labels-confirm");
 const clearLabelsFalseButton = document.querySelector("#clear-labels-false");
 const clearLabelsTrueButton = document.querySelector("#clear-labels-true");
 
-// visibility of before-deletion popups;
-clearNotesOption.addEventListener("click", () => {
-    clearNotesConfirmEl.classList.add("clearing-confirmation-active");
-});
-clearNotesFalseButton.addEventListener("click", () => {
-    clearNotesConfirmEl.classList.remove("clearing-confirmation-active");
-});
-clearLabelsOption.addEventListener("click", () => {
-    clearLabelsConfirmEl.classList.add("clearing-confirmation-active");
-});
-clearLabelsFalseButton.addEventListener("click", () => {
-    clearLabelsConfirmEl.classList.remove("clearing-confirmation-active");
-});
+const resetAppOption = document.querySelector("#reset-app")
+const resetAppConfirmEl = document.querySelector("#reset-app-confirm");
+const resetAppFalseButton = document.querySelector("#reset-app-false");
+const resetAppTrueButton = document.querySelector("#reset-app-true");
 
-// clear notes/labels;
+// visibility of deletion confirmation popups;
+// clear all notes;
 clearNotesTrueButton.addEventListener("click", () => {
     localStorage.setItem("notes", JSON.stringify([]))
     makeStoredNotesHTML();
@@ -531,6 +524,14 @@ clearNotesTrueButton.addEventListener("click", () => {
     clearNotesConfirmEl.classList.remove("clearing-confirmation-active");
     clearLabelsConfirmEl.classList.remove("clearing-confirmation-active");
 });
+clearNotesOption.addEventListener("click", () => {
+    clearNotesConfirmEl.classList.add("clearing-confirmation-active");
+});
+clearNotesFalseButton.addEventListener("click", () => {
+    clearNotesConfirmEl.classList.remove("clearing-confirmation-active");
+});
+
+// clear all labels;
 clearLabelsTrueButton.addEventListener("click", () => {
     localStorage.setItem("labels", JSON.stringify([]))
     let storedLabels = JSON.parse(localStorage.getItem("labels"));
@@ -539,6 +540,26 @@ clearLabelsTrueButton.addEventListener("click", () => {
     toastNotice("Labels Deleted", 5)
     clearNotesConfirmEl.classList.remove("clearing-confirmation-active");
     clearLabelsConfirmEl.classList.remove("clearing-confirmation-active");
+});
+clearLabelsOption.addEventListener("click", () => {
+    clearLabelsConfirmEl.classList.add("clearing-confirmation-active");
+});
+clearLabelsFalseButton.addEventListener("click", () => {
+    clearLabelsConfirmEl.classList.remove("clearing-confirmation-active");
+});
+
+// reset app;
+resetAppTrueButton.addEventListener("click", () => {
+    localStorage.clear();
+    allNotesContainer.innerHTML = "";
+    toastNotice("App has been reset to its factory state", 5)
+    resetAppConfirmEl.classList.remove("clearing-confirmation-active");
+})
+resetAppOption.addEventListener("click", () => {
+    resetAppConfirmEl.classList.add("clearing-confirmation-active");
+});
+resetAppFalseButton.addEventListener("click", () => {
+    resetAppConfirmEl.classList.remove("clearing-confirmation-active");
 });
 
 // hide/show the settings menu;
@@ -589,7 +610,7 @@ themeOptionsTogglers.forEach(optionButton => {
         let classToSwitchTo = optionButton.id;
         body.className = classToSwitchTo
         let settings = JSON.parse(localStorage.getItem("settings"));
-        settings.theme = classToSwitchTo
+        settings[0].theme = classToSwitchTo
         localStorage.setItem("settings", JSON.stringify(settings));
         indicateWhichThemeIsActive()
     });

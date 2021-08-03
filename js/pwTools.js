@@ -41,14 +41,6 @@ function toastDelete(message, time, restoreNote) {
 
 }
 
-
-// function pwToast(message = "", time = 5) {
-//     time *= 1000;
-//     let toast = document.getElementById("toast");
-//     toast.innerHTML = message;
-//     toast.className = "show";
-//     setTimeout(function() { toast.className = toast.className.replace("show", ""); }, time);
-// }
 // Enable vibration support
 navigator.vibrate = navigator.vibrate || navigator.webkitVibrate || navigator.mozVibrate || navigator.msVibrate;
 

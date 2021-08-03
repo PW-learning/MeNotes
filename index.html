@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="html-f-roboto">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
@@ -113,12 +113,24 @@
                 </div>
             </ul>
         </div>
+        <div class="reset-app-settings">
+            <h3>Reset:</h3>
+            <div>
+                <p id="reset-app">Factory Reset</p>
+                <div data-target="reset-app" id="reset-app-confirm" class="clearing-confirmation reset-confirm">
+                    <button id="reset-app-true">Factory Reset.</button>
+                    <button id="reset-app-false">Go back</button>
+                    <p class="reset-notice"> (Delete notes, labels, settings and everything, resetting the app to its initial state, useful if you are experiencing any weird behavior after updating to version 2 of MeNotes)</p>
+                </div>
+            </div>
+        </div>
+
     </div>
     <footer>
         <p>Share when you sure!</p>
     </footer>
     <div id="toast">Toast Content</div>
-    <script src="js/pwTools.js?v=0.001"></script>
+    <script src="js/pwTools.js?v=0.002"></script>
     <script src="js/app.js?v=0.002"></script>
 </body>
 

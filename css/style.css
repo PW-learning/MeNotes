@@ -2,20 +2,9 @@
     --pw-white: #fff;
     --pw-black: #000;
     --pw-grey: #ccc;
-    /* light variables */
-    /* --pw-bg: #eee;
-    --pw-main: #2f58a8;
-    --pw-main-lighter: #4a76ce;
-    --pw-heading: #2f58a8;
-    --pw-warn: #ee0f0f; */
-    /* dark variables */
-    /* --pw-dark-bg: #000;
-    --pw-dark-main: #ff4af4;
-    --pw--heading: #41e1bb;
-    --pw-dark-shadow: #333; */
+    --pw-dark-shadow: #333;
     /* fonts */
     --pw-f-rubik: 'Rubik', sans-serif;
-    --pw-f-roboto: 'Roboto', sans-serif;
 }
 
 .light {
@@ -128,6 +117,14 @@ header .settings-icon-moved {
     font-size: 18px;
     padding: 0.2rem 0.4rem;
     transition: all 400ms ease-in;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: stretch;
+}
+
+.settings-menu div:last-child {
+    margin: 2.4rem 0 0.2rem;
 }
 
 .settings-menu-moved {
@@ -146,7 +143,6 @@ header .settings-icon-moved {
 .themes-settings {
     display: flex;
     align-items: center;
-    padding: 0.2rem 0.8rem;
 }
 
 .themes-options {
@@ -193,7 +189,6 @@ header .settings-icon-moved {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.2rem 0.8rem;
 }
 
 .clearing-options {
@@ -230,17 +225,27 @@ header .settings-icon-moved {
     background-color: var(--pw-warn);
     border-radius: 1rem;
     display: none;
-    padding: 5px;
+    padding: 1rem 0.4rem;
+    z-index: 4;
+}
+
+.clearing-confirmation button {
+    margin: 1rem 0.5rem;
 }
 
 .clearing-notes {
-    top: 6px;
-    right: -73px;
+    top: -18px;
+    right: -34px;
 }
 
 .clearing-labels {
-    top: 10px;
-    right: -73px;
+    top: -41px;
+    right: -34px;
+}
+
+.reset-confirm {
+    top: 91px;
+    right: -22px;
 }
 
 .clearing-confirmation-active {
@@ -265,36 +270,42 @@ header .settings-icon-moved {
     color: var(--pw-white);
 }
 
+.reset-app-settings {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
 
-/* .themes-settings {
-    text-align: left;
-} */
+.reset-app-settings p:first-child {
+    position: relative;
+    margin-right: 5.1rem;
+}
+
+.reset-app-settings p:first-child:after {
+    content: "";
+    width: 0px;
+    height: 0px;
+    display: block;
+    background-color: transparent;
+    border: 5px solid transparent;
+    border-top: 5px solid var(--pw-main);
+    position: absolute;
+    top: 6px;
+    right: -35px;
+}
+
+.reset-notice {
+    font-size: 12px;
+    color: gray;
+    text-align: center;
+    padding: 0.5rem 0 0;
+    font-weight: 700;
+    border-top: 2px solid var(--pw-grey);
+}
 
 main {
     padding: 1rem;
 }
-
-
-/* .note-container {
-    padding: 1rem;
-    margin: 3em auto;
-    background-color: var(--pw-white);
-    color: var(--pw-black);
-    border-radius: 1rem;
-} */
-
-
-/* .new-note {
-    white-space: pre-wrap;
-    padding: 5px;
-    width: 100%;
-    height: 120px;
-    resize: none;
-    border: none;
-    background-color: var(--pw-white);
-    outline-color: var(--pw-white);
-    color: var(--pw--heading);
-} */
 
 .text-area-container {
     background-color: var(--pw-bg-light);
@@ -406,7 +417,6 @@ main {
 }
 
 .labels-list li {
-    padding: 2px 6px;
     border-bottom: 1px solid var(--pw-main-lighter);
     padding: 5px 3px;
     display: flex;
@@ -506,14 +516,6 @@ main {
 .hide-button {
     display: none;
 }
-
-
-/* .note-date p:first-of-type{
-    text-align: inherit;
-} */
-
-
-/*  */
 
 button {
     border: none;
