@@ -1,4 +1,4 @@
-const cacheName = 'pw-v1';
+const cacheName = 'pw-v2';
 self.addEventListener('install', e => {});
 self.addEventListener('activate', e => {
     e.waitUntil(
