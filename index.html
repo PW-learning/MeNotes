@@ -1,138 +1,330 @@
 <!DOCTYPE html>
 <html lang="en" translate="no">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MeNote</title>
+        <link rel="stylesheet" href="css/style.css?v=0.002" />
+        <meta name="google" content="notranslate" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-title" content="MeNotes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="#2f58a8" />
+        <link
+            rel="apple-touch-icon"
+            sizes="57x57"
+            href="./pwa-assets/apple/apple-icon-57x57.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="60x60"
+            href="./pwa-assets/apple/apple-icon-60x60.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="72x72"
+            href="./pwa-assets/apple/apple-icon-72x72.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="76x76"
+            href="./pwa-assets/apple/apple-icon-76x76.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="114x114"
+            href="./pwa-assets/apple/apple-icon-114x114.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="120x120"
+            href="./pwa-assets/apple/apple-icon-120x120.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="144x144"
+            href="./pwa-assets/apple/apple-icon-144x144.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="152x152"
+            href="./pwa-assets/apple/apple-icon-152x152.png"
+        />
+        <link
+            rel="apple-touch-icon"
+            sizes="180x180"
+            href="./pwa-assets/apple/apple-icon-180x180.png"
+        />
+        <link
+            href="./pwa-assets/splashscreens/iphone5_splash.png"
+            media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)"
+            rel="apple-touch-startup-image"
+        />
+        <link
+            href="./pwa-assets/splashscreens/iphone6_splash.png"
+            media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)"
+            rel="apple-touch-startup-image"
+        />
+        <link
+            href="./pwa-assets/splashscreens/iphoneplus_splash.png"
+            media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)"
+            rel="apple-touch-startup-image"
+        />
+        <link
+            href="./pwa-assets/splashscreens/iphonex_splash.png"
+            media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)"
+            rel="apple-touch-startup-image"
+        />
+        <link
+            href="./pwa-assets/splashscreens/iphonexr_splash.png"
+            media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)"
+            rel="apple-touch-startup-image"
+        />
+        <link
+            href="./pwa-assets/splashscreens/iphonexsmax_splash.png"
+            media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)"
+            rel="apple-touch-startup-image"
+        />
+        <link
+            href="./pwa-assets/splashscreens/ipad_splash.png"
+            media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)"
+            rel="apple-touch-startup-image"
+        />
+        <link
+            href="./pwa-assets/splashscreens/ipadpro1_splash.png"
+            media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)"
+            rel="apple-touch-startup-image"
+        />
+        <link
+            href="./pwa-assets/splashscreens/ipadpro3_splash.png"
+            media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)"
+            rel="apple-touch-startup-image"
+        />
+        <link
+            href="./pwa-assets/splashscreens/ipadpro2_splash.png"
+            media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)"
+            rel="apple-touch-startup-image"
+        />
+        <!-- <link rel="icon" type="image/png" sizes="192x192" href="./pwa-assets/android/android-icon-192x192.png" /> -->
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="./favicon-32x32.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="96x96"
+            href="./favicon-96x96.png"
+        />
+        <link
+            rel="icon"
+            type="image/png"
+            sizes="16x16"
+            href="./favicon-16x16.png"
+        />
+        <link rel="manifest" href="/manifest.json" />
+        <meta name="msapplication-TileColor" content="#2f58a8" />
+        <meta
+            name="msapplication-TileImage"
+            content="./pwa-assets/ms/ms-icon-144x144.png"
+        />
+        <meta name="theme-color" content="#2f58a8" />
+        <script
+            type="module"
+            src="https://cdn.jsdelivr.net/npm/@pwabuilder/pwaauth@latest/dist/pwa-auth.min.js"
+        ></script>
+        <!-- fonts -->
+        <!-- RUBIK -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap"
+            rel="stylesheet"
+        />
+        <!-- ROBOTO -->
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap"
+            rel="stylesheet"
+        />
+    </head>
 
-<head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>MeNote</title>
-    <link rel="stylesheet" href="css/style.css?v=0.002" />
-    <meta name="google" content="notranslate" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="apple-mobile-web-app-title" content="MeNotes" />
-    <meta name="apple-mobile-web-app-status-bar-style" content="#2f58a8" />
-    <link rel="apple-touch-icon" sizes="57x57" href="./pwa-assets/apple/apple-icon-57x57.png" />
-    <link rel="apple-touch-icon" sizes="60x60" href="./pwa-assets/apple/apple-icon-60x60.png" />
-    <link rel="apple-touch-icon" sizes="72x72" href="./pwa-assets/apple/apple-icon-72x72.png" />
-    <link rel="apple-touch-icon" sizes="76x76" href="./pwa-assets/apple/apple-icon-76x76.png" />
-    <link rel="apple-touch-icon" sizes="114x114" href="./pwa-assets/apple/apple-icon-114x114.png" />
-    <link rel="apple-touch-icon" sizes="120x120" href="./pwa-assets/apple/apple-icon-120x120.png" />
-    <link rel="apple-touch-icon" sizes="144x144" href="./pwa-assets/apple/apple-icon-144x144.png" />
-    <link rel="apple-touch-icon" sizes="152x152" href="./pwa-assets/apple/apple-icon-152x152.png" />
-    <link rel="apple-touch-icon" sizes="180x180" href="./pwa-assets/apple/apple-icon-180x180.png" />
-    <link href="./pwa-assets/splashscreens/iphone5_splash.png" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <link href="./pwa-assets/splashscreens/iphone6_splash.png" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <link href="./pwa-assets/splashscreens/iphoneplus_splash.png" media="(device-width: 621px) and (device-height: 1104px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
-    <link href="./pwa-assets/splashscreens/iphonex_splash.png" media="(device-width: 375px) and (device-height: 812px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
-    <link href="./pwa-assets/splashscreens/iphonexr_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <link href="./pwa-assets/splashscreens/iphonexsmax_splash.png" media="(device-width: 414px) and (device-height: 896px) and (-webkit-device-pixel-ratio: 3)" rel="apple-touch-startup-image" />
-    <link href="./pwa-assets/splashscreens/ipad_splash.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <link href="./pwa-assets/splashscreens/ipadpro1_splash.png" media="(device-width: 834px) and (device-height: 1112px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <link href="./pwa-assets/splashscreens/ipadpro3_splash.png" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <link href="./pwa-assets/splashscreens/ipadpro2_splash.png" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2)" rel="apple-touch-startup-image" />
-    <!-- <link rel="icon" type="image/png" sizes="192x192" href="./pwa-assets/android/android-icon-192x192.png" /> -->
-    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="96x96" href="./favicon-96x96.png" />
-    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
-    <link rel="manifest" href="/manifest.json">
-    <meta name="msapplication-TileColor" content="#2f58a8">
-    <meta name="msapplication-TileImage" content="./pwa-assets/ms/ms-icon-144x144.png">
-    <meta name="theme-color" content="#2f58a8">
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@pwabuilder/pwaauth@latest/dist/pwa-auth.min.js"></script>
-    <!-- fonts -->
-    <!-- RUBIK -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <!-- ROBOTO -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap" rel="stylesheet">
-</head>
-
-<body class="light">
-    <header>
-        <div class="title-container">
-            <h1>MeNotes</h1>
-            <p>Share when you sure</p>
-        </div>
-        <div class="settings-icon-container">
-            <svg aria-hidden="true" id="settings-icon" class="settings-icon" focusable="false" data-prefix="fas" data-icon="cog" class="svg-inline--fa fa-cog fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M487.4 315.7l-42.6-24.6c4.3-23.2 4.3-47 0-70.2l42.6-24.6c4.9-2.8 7.1-8.6 5.5-14-11.1-35.6-30-67.8-54.7-94.6-3.8-4.1-10-5.1-14.8-2.3L380.8 110c-17.9-15.4-38.5-27.3-60.8-35.1V25.8c0-5.6-3.9-10.5-9.4-11.7-36.7-8.2-74.3-7.8-109.2 0-5.5 1.2-9.4 6.1-9.4 11.7V75c-22.2 7.9-42.8 19.8-60.8 35.1L88.7 85.5c-4.9-2.8-11-1.9-14.8 2.3-24.7 26.7-43.6 58.9-54.7 94.6-1.7 5.4.6 11.2 5.5 14L67.3 221c-4.3 23.2-4.3 47 0 70.2l-42.6 24.6c-4.9 2.8-7.1 8.6-5.5 14 11.1 35.6 30 67.8 54.7 94.6 3.8 4.1 10 5.1 14.8 2.3l42.6-24.6c17.9 15.4 38.5 27.3 60.8 35.1v49.2c0 5.6 3.9 10.5 9.4 11.7 36.7 8.2 74.3 7.8 109.2 0 5.5-1.2 9.4-6.1 9.4-11.7v-49.2c22.2-7.9 42.8-19.8 60.8-35.1l42.6 24.6c4.9 2.8 11 1.9 14.8-2.3 24.7-26.7 43.6-58.9 54.7-94.6 1.5-5.5-.7-11.3-5.6-14.1zM256 336c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z"></path></svg>
-        </div>
-    </header>
-    <main>
-        <div class="text-area-container">
-            <div class="text-areas">
-                <div>
-                    <textarea name="title" id="title-text-area" class="generic-text-area title-text-area" minlength="" maxlength="32" placeholder="Note Title..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
-                    <div id="labels" class="labels">
-                        <button class="labels-button" id="labels-button">Labels...</button>
-                        <div id="labels-container" class="labels-container">
-                            <textarea name="labels" id="lables-text-area" class="generic-text-area labels-text-area" placeholder="new label..." maxlength="12" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
-                            <button id="add-new-label-button" class="add-new-label-button">New</button>
-                            <ul id="labels-list" class="labels-list"></ul>
+    <body class="light">
+        <header>
+            <div class="title-container">
+                <h1>
+                    <img
+                        src="https://menotes.pehpe.com/pwa-assets/menotes-logo.png"
+                        width="22"
+                    /><span class="title-stand-out">Me</span>Notes
+                </h1>
+                <p>Share when you sure</p>
+            </div>
+            <div class="settings-icon-container">
+                <svg
+                    aria-hidden="true"
+                    id="settings-icon"
+                    class="settings-icon"
+                    focusable="false"
+                    data-prefix="fas"
+                    data-icon="cog"
+                    class="svg-inline--fa fa-cog fa-w-16"
+                    role="img"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512"
+                >
+                    <path
+                        fill="currentColor"
+                        d="M487.4 315.7l-42.6-24.6c4.3-23.2 4.3-47 0-70.2l42.6-24.6c4.9-2.8 7.1-8.6 5.5-14-11.1-35.6-30-67.8-54.7-94.6-3.8-4.1-10-5.1-14.8-2.3L380.8 110c-17.9-15.4-38.5-27.3-60.8-35.1V25.8c0-5.6-3.9-10.5-9.4-11.7-36.7-8.2-74.3-7.8-109.2 0-5.5 1.2-9.4 6.1-9.4 11.7V75c-22.2 7.9-42.8 19.8-60.8 35.1L88.7 85.5c-4.9-2.8-11-1.9-14.8 2.3-24.7 26.7-43.6 58.9-54.7 94.6-1.7 5.4.6 11.2 5.5 14L67.3 221c-4.3 23.2-4.3 47 0 70.2l-42.6 24.6c-4.9 2.8-7.1 8.6-5.5 14 11.1 35.6 30 67.8 54.7 94.6 3.8 4.1 10 5.1 14.8 2.3l42.6-24.6c17.9 15.4 38.5 27.3 60.8 35.1v49.2c0 5.6 3.9 10.5 9.4 11.7 36.7 8.2 74.3 7.8 109.2 0 5.5-1.2 9.4-6.1 9.4-11.7v-49.2c22.2-7.9 42.8-19.8 60.8-35.1l42.6 24.6c4.9 2.8 11 1.9 14.8-2.3 24.7-26.7 43.6-58.9 54.7-94.6 1.5-5.5-.7-11.3-5.6-14.1zM256 336c-44.1 0-80-35.9-80-80s35.9-80 80-80 80 35.9 80 80-35.9 80-80 80z"
+                    ></path>
+                </svg>
+            </div>
+        </header>
+        <main>
+            <div class="note-wrapper">
+                <div class="text-areas">
+                    <div>
+                        <textarea
+                            name="title"
+                            id="title-text-area"
+                            class="generic-text-area title-text-area"
+                            minlength=""
+                            maxlength="32"
+                            placeholder="Note Title..."
+                            autocomplete="off"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            dir="auto"
+                        ></textarea>
+                        <div id="labels" class="labels">
+                            <button class="labels-button" id="labels-button">
+                                Labels...
+                            </button>
+                            <div id="labels-container" class="labels-container">
+                                <textarea
+                                    name="labels"
+                                    id="lables-text-area"
+                                    class="generic-text-area labels-text-area"
+                                    placeholder="new label..."
+                                    maxlength="12"
+                                    autocomplete="off"
+                                    autocorrect="off"
+                                    autocapitalize="off"
+                                    spellcheck="false"
+                                    dir="auto"
+                                ></textarea>
+                                <button
+                                    id="add-new-label-button"
+                                    class="add-new-label-button"
+                                >
+                                    New
+                                </button>
+                                <ul id="labels-list" class="labels-list"></ul>
+                            </div>
                         </div>
                     </div>
+                    <div>
+                        <textarea
+                            name="note"
+                            id="note-text-area"
+                            class="generic-text-area note-text-area"
+                            placeholder="..."
+                            autocomplete="off"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            spellcheck="false"
+                            dir="auto"
+                        ></textarea>
+                        <div
+                            class="current-note-labels"
+                            id="current-note-labels"
+                        ></div>
+                    </div>
                 </div>
+                <div class="current-note-details">
+                    <span id="letters-count" class="letters-count"
+                        >0 characters</span
+                    >
+                    <button id="add-button">ADD NEW NOTE</button>
+                </div>
+            </div>
+            <hr />
+            <div id="all-notes-container">
+                <p>
+                    You have a total of <span id="notes-count">0</span> note(s)
+                </p>
+            </div>
+        </main>
+        <div class="settings-menu" id="settings-menu-container">
+            <h2>App Settings</h2>
+            <div class="themes-settings">
+                <h3>Theme:</h3>
+                <ul class="themes-options">
+                    <li id="dark">Dark</li>
+                    <li id="light" class="current-theme-highlight">Light</li>
+                </ul>
+            </div>
+            <div class="clearing-settings">
+                <h3>Data:</h3>
+                <ul class="clearing-options">
+                    <li class="clearing-button" id="clear-notes">
+                        Delete All Notes
+                    </li>
+                    <li class="clearing-button" id="clear-labels">
+                        Delete All Labels
+                    </li>
+                    <div
+                        data-target="clear-notes"
+                        id="clear-notes-confirm"
+                        class="clearing-confirmation clearing-notes"
+                    >
+                        <button id="clear-notes-true">
+                            Delete. (Deleting All notes can't be undone)
+                        </button>
+                        <button id="clear-notes-false">Go back</button>
+                    </div>
+                    <div
+                        data-target="clear-labels"
+                        id="clear-labels-confirm"
+                        class="clearing-confirmation clearing-labels"
+                    >
+                        <button id="clear-labels-true">
+                            Delete. (Deleting All Labels can't be undone)
+                        </button>
+                        <button id="clear-labels-false">Go back</button>
+                    </div>
+                </ul>
+            </div>
+            <div class="reset-app-settings">
+                <h3>Reset:</h3>
                 <div>
-                    <textarea name="note" id="note-text-area" class="generic-text-area note-text-area" placeholder="..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"></textarea>
-                    <div class="current-note-labels" id="current-note-labels">
+                    <p id="reset-app">Factory Reset</p>
+                    <div
+                        data-target="reset-app"
+                        id="reset-app-confirm"
+                        class="clearing-confirmation reset-confirm"
+                    >
+                        <button id="reset-app-true">Factory Reset.</button>
+                        <button id="reset-app-false">Go back</button>
+                        <p class="reset-notice">
+                            (Delete notes, labels, settings and everything,
+                            resetting the app to its initial state, useful if
+                            you are experiencing any weird behavior after
+                            updating to version 2 of MeNotes)
+                        </p>
                     </div>
                 </div>
             </div>
-            <div class="current-note-details">
-                <span id="letters-count" class="letters-count">0 characters</span>
-                <button id="add-button">ADD NEW NOTE</button>
-            </div>
         </div>
-        <hr>
-        <div id="all-notes-container">
-            <p>You have a total of <span id="notes-count">0</span> note(s)</p>
-        </div>
-    </main>
-    <div class="settings-menu" id="settings-menu-container">
-        <h2>App Settings</h2>
-        <div class="themes-settings">
-            <h3>Theme:</h3>
-            <ul class="themes-options">
-                <li id="dark">Dark </li>
-                <li id="light" class="current-theme-highlight">Light </li>
-            </ul>
-        </div>
-        <div class="clearing-settings">
-            <h3>Data:</h3>
-            <ul class="clearing-options">
-                <li class="clearing-button" id="clear-notes">Delete All Notes</li>
-                <li class="clearing-button" id="clear-labels">Delete All Labels</li>
-                <div data-target="clear-notes" id="clear-notes-confirm" class="clearing-confirmation clearing-notes">
-                    <button id="clear-notes-true">Delete. (Deleting All notes can't be undone)</button>
-                    <button id="clear-notes-false">Go back</button>
-                </div>
-                <div data-target="clear-labels" id="clear-labels-confirm" class="clearing-confirmation clearing-labels">
-                    <button id="clear-labels-true">Delete. (Deleting All Labels can't be undone)</button>
-                    <button id="clear-labels-false">Go back</button>
-                </div>
-            </ul>
-        </div>
-        <div class="reset-app-settings">
-            <h3>Reset:</h3>
-            <div>
-                <p id="reset-app">Factory Reset</p>
-                <div data-target="reset-app" id="reset-app-confirm" class="clearing-confirmation reset-confirm">
-                    <button id="reset-app-true">Factory Reset.</button>
-                    <button id="reset-app-false">Go back</button>
-                    <p class="reset-notice"> (Delete notes, labels, settings and everything, resetting the app to its initial state, useful if you are experiencing any weird behavior after updating to version 2 of MeNotes)</p>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <footer>
-        <p>Share when you sure!</p>
-    </footer>
-    <div id="toast">Toast Content</div>
-    <script src="js/pwTools.js?v=0.002"></script>
-    <script src="js/app.js?v=0.002"></script>
-</body>
-
+        <footer>
+            <p>Share when you sure!</p>
+        </footer>
+        <div id="toast">Toast Content</div>
+        <script src="js/pwTools.js?v=0.002"></script>
+        <script src="js/app.js?v=0.002"></script>
+    </body>
 </html>

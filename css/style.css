@@ -4,7 +4,7 @@
     --pw-grey: #ccc;
     --pw-dark-shadow: #333;
     /* fonts */
-    --pw-f-rubik: 'Rubik', sans-serif;
+    --pw-f-rubik: "Rubik", sans-serif;
 }
 
 .light {
@@ -14,6 +14,7 @@
     --pw-main-lighter: #4a76ce;
     --pw-heading: #2f58a8;
     --pw-warn: #4a76ce;
+    --pw-special: #ff0000;
 }
 
 .dark {
@@ -23,6 +24,7 @@
     --pw-main-lighter: #9bf0dc;
     --pw--heading: #ff4af4;
     --pw-warn: #333;
+    --pw-special: #ffffff;
 }
 
 *,
@@ -103,7 +105,9 @@ header .settings-icon-moved {
     transform: translate(270px, 0px);
     z-index: 5;
 }
-
+header .title-stand-out {
+    color: var(--pw-special);
+}
 .settings-menu {
     position: absolute;
     top: 22px;
@@ -307,8 +311,8 @@ main {
     padding: 1rem;
 }
 
-.text-area-container {
-    background-color: var(--pw-bg-light);
+.note-wrapper {
+    background-color: white;
     max-width: 360px;
     margin: 2em auto;
     position: relative;
@@ -323,26 +327,32 @@ main {
     border-radius: 1rem;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
+    box-shadow: 0px -1px 5px 0 var(--pw-bg-light);
 }
-
+.text-areas > div {
+    background-color: var(--pw-white);
+    border-top-right-radius: 1rem;
+    border-top-left-radius: 1rem;
+}
 .generic-text-area {
     width: 100%;
     padding: 12px 6px;
     resize: none;
     border: none;
+    border-top-left-radius: 1rem;
     outline: none;
-    background-color: inherit;
+    background-color: var(--pw-white);
     color: var(--pw-black);
-    font-size: 15px
+    font-size: 15px;
 }
 
 .title-text-area {
     font-weight: 700;
     font-size: 18px;
     height: min-content;
-    width: 250px;
     word-break: normal;
     hyphens: auto;
+    border-top-right-radius: 1rem;
 }
 
 .note-text-area {
@@ -380,6 +390,13 @@ main {
     text-align: center;
     max-height: 180px;
     overflow-y: auto;
+    background: #eee;
+    background-color: var(--pw-bg-light);
+    border-radius: 5px;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    box-shadow: 0 0 2px var(--pw-bg-light);
+    z-index: 12;
 }
 
 .show-labels-container {
@@ -406,14 +423,15 @@ main {
 
 .labels-text-area {
     background-color: var(--pw-bg-light);
-    border-radius: 0;
+    border-radius: 5px;
     height: 42px;
 }
 
 .labels-list {
     background-color: var(--pw-main);
-    color: var(--pw-black);
+    color: var(--pw-white);
     width: 96%;
+    border-top-right-radius: 5px;
 }
 
 .labels-list li {
@@ -441,6 +459,7 @@ main {
 .current-note-labels {
     padding: 12px 0;
     color: var(--pw-black);
+    background-color: var(--pw-white);
     cursor: pointer;
     display: flex;
     justify-content: flex-start;
@@ -448,7 +467,10 @@ main {
     height: fit-content;
     min-height: 44px;
 }
-
+.note-info,
+.current-note-details {
+    background-color: var(--pw-bg-light);
+}
 .label-span {
     border-radius: 1.1rem;
     background-color: var(--pw-main);
@@ -485,18 +507,16 @@ main {
     text-align: center;
 }
 
-
 /* the hour/date of a note div/paragraph */
 
-.note-info>div:first-child {
+.note-info > div:first-child {
     display: flex;
     flex-direction: row-reverse;
 }
 
-
 /* the last edited at paragraph */
 
-.note-info>div:first-child p {
+.note-info > div:first-child p {
     align-self: flex-end;
     margin-right: 5px;
 }
@@ -505,7 +525,6 @@ main {
     align-self: flex-end;
     padding: 4px;
 }
-
 
 /* editing a note */
 
@@ -524,6 +543,7 @@ button {
     background-color: var(--pw-main);
     color: var(--pw-white);
     border: none;
+    border-radius: 5px;
 }
 
 footer {
@@ -542,6 +562,8 @@ footer {
     left: 0;
     padding: 5px;
     text-align: center;
+    text-shadow: 0px 1px 2px var(--pw-warn);
+    border-radius: 1rem 1rem 0 0;
 }
 
 #toast {
@@ -576,4 +598,5 @@ footer {
     font-weight: 900;
     margin-left: 2rem;
     font-size: 19px;
+    text-decoration: underline;
 }
