@@ -2,4 +2,6 @@
 
 ## An App to store and share your notes when you are sure!
 
-## The App is currently in its alpha. Some features might not work or might behave differently than expected though we are planning on working on it still to improve it and get rid of any bugs.
+MeNotes is an aims to store your notes locally and privately on your own device with the ability to edit, share, adding and deleteing new notes, theme change, letters couting, labels and more.
+
+We plan on adding new features to the app in the future, all contributions are welcome!
